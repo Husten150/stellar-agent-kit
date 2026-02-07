@@ -1,0 +1,21 @@
+{
+  "name": "warly-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Warly: the agentic kit — Landing page",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "fish-ui": "^1.0.0",
+    "vue": "^2.7.16"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "^2.3.1",
+    "less": "^4.2.0",
+    "vite": "^5.4.0",
+    "vue-template-compiler": "^2.7.16"
+  }
+}
