@@ -7,12 +7,12 @@ function toOpenAITools() {
             type: "function",
             function: {
                 name: "check_balance",
-                description: "Get all token balances for a Stellar address",
+                description: "Get all token balances for a Stellar address. Uses testnet by default; use network mainnet if the user's account is on mainnet.",
                 parameters: {
                     type: "object",
                     properties: {
                         address: { type: "string", description: "Stellar public key (starts with G)" },
-                        network: { type: "string", enum: ["testnet", "mainnet"], description: "Network" },
+                        network: { type: "string", enum: ["testnet", "mainnet"], description: "Network (default testnet; use mainnet if user has mainnet account)" },
                     },
                     required: ["address"],
                 },
@@ -51,6 +51,9 @@ function readLine(prompt) {
 }
 /** Execute tool by name with parsed args; return string for the model. */
 async function runOneTool(name, args) {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3d1882c5-dc48-494c-98b8-3a0080ef9d74', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'cliAgent.ts:runOneTool', message: 'tool invoked', data: { name, argsKeys: Object.keys(args), address: args?.address, network: args?.network }, hypothesisId: 'H3', timestamp: Date.now() }) }).catch(() => { });
+    // #endregion
     const tool = tools.find((t) => t.name === name);
     if (!tool)
         return JSON.stringify({ error: `Unknown tool: ${name}` });

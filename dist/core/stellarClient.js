@@ -30,6 +30,7 @@ export class StellarClient {
         if (!parsed.success) {
             throw new Error(parsed.error.errors.map((e) => e.message).join("; "));
         }
+        const networkLabel = this.config.horizonUrl.includes("testnet") ? "testnet" : "mainnet";
         const account = await this.server
             .accounts()
             .accountId(parsed.data)
@@ -39,7 +40,10 @@ export class StellarClient {
                 ? err.response
                 : undefined;
             if (res?.status === 404) {
-                throw new Error(`Account not found: ${address}`);
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/3d1882c5-dc48-494c-98b8-3a0080ef9d74', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'stellarClient.ts:getBalance', message: 'Horizon 404', data: { address, network: networkLabel }, hypothesisId: 'H2', timestamp: Date.now() }) }).catch(() => { });
+                // #endregion
+                throw new Error(`Account not found on ${networkLabel}: ${address}. If you use mainnet, ask for balance "on mainnet". New accounts must be funded first.`);
             }
             throw err;
         });

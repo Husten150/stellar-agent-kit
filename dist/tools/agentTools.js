@@ -40,6 +40,9 @@ export const tools = [
             network: z.enum(["testnet", "mainnet"]).optional().default("testnet"),
         }),
         execute: async ({ address, network, }) => {
+            // #region agent log
+            fetch('http://127.0.0.1:7242/ingest/3d1882c5-dc48-494c-98b8-3a0080ef9d74', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'agentTools.ts:check_balance', message: 'check_balance params', data: { address, network }, hypothesisId: 'H1', timestamp: Date.now() }) }).catch(() => { });
+            // #endregion
             const config = getNetworkConfig(network);
             const client = new StellarClient(config);
             const balances = await client.getBalance(address);
