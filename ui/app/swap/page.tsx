@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { SwapInterface } from "@/components/swap-interface"
 import { SendInterface } from "@/components/send-interface"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { PageTransition } from "@/components/page-transition"
 import Script from "next/script"
 
 export default function SwapPage() {
@@ -142,6 +143,7 @@ export default function SwapPage() {
       </div>
 
       {/* Swap Content */}
+      <PageTransition>
       <div className="relative z-20 container mx-auto px-6 lg:px-12 pt-24 pb-32 min-h-screen flex flex-col justify-center">
         <div className="max-w-md mx-auto w-full">
           {/* Header */}
@@ -175,6 +177,7 @@ export default function SwapPage() {
           </div>
         </div>
       </div>
+      </PageTransition>
     </main>
   )
 }

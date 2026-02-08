@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ExternalLink, Copy, Check, ChevronDown, ChevronUp, Code } from "lucide-react"
 import { Navbar } from "@/components/navbar"
+import { PageTransition } from "@/components/page-transition"
 
 const PROTOCOLS = [
   {
@@ -170,7 +171,7 @@ export default function ProtocolsPage() {
   return (
     <main className="relative min-h-screen bg-black text-white overflow-hidden">
       <Navbar />
-
+      <PageTransition>
       <section className="relative z-20 py-16 md:py-24">
         <div className="mx-auto w-full max-w-4xl px-6 sm:px-8 lg:px-12">
           <header className="mb-16">
@@ -213,6 +214,7 @@ export default function ProtocolsPage() {
           </ul>
         </div>
       </section>
+      </PageTransition>
     </main>
   )
 }

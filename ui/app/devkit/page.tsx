@@ -20,6 +20,7 @@ import {
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PageTransition } from "@/components/page-transition"
 
 const PROJECT_STORAGE_KEY = "stellar-devkit-project"
 
@@ -86,6 +87,22 @@ const PROTOCOLS = [
     description: "Call a payment-gated API and pay with Stellar.",
     codeKey: "x402Client",
     tryItHref: null,
+  },
+  {
+    id: "one-shot-swap",
+    title: "One-shot swap (dexSwapExactIn)",
+    tags: ["DEX", "Mainnet", "Testnet"],
+    description: "Quote and execute in one call. Same as get quote + swap but a single method.",
+    codeKey: "oneShotSwap",
+    tryItHref: "/swap",
+  },
+  {
+    id: "full-setup",
+    title: "Full setup example",
+    tags: ["Setup", "Mainnet", "Testnet"],
+    description: "Complete flow: initialize agent, get quote, execute swap. Copy-paste ready.",
+    codeKey: "fullSetup",
+    tryItHref: "/swap",
   },
 ]
 
@@ -161,6 +178,36 @@ const res = await x402Fetch(url, undefined, {
   },
 });
 const data = await res.json();`,
+  },
+  oneShotSwap: {
+    filename: "swap-one-shot.ts",
+    code: `import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
+
+const agent = new StellarAgentKit(process.env.SECRET_KEY!, "mainnet");
+await agent.initialize();
+
+// Quote + swap in one call
+const result = await agent.dexSwapExactIn(
+  { contractId: MAINNET_ASSETS.XLM.contractId },
+  { contractId: MAINNET_ASSETS.USDC.contractId },
+  "10000000"
+);
+console.log("Swap tx hash:", result.hash);`,
+  },
+  fullSetup: {
+    filename: "full-setup.ts",
+    code: `import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
+
+const agent = new StellarAgentKit(process.env.SECRET_KEY!, "mainnet");
+await agent.initialize();
+
+const quote = await agent.dexGetQuote(
+  { contractId: MAINNET_ASSETS.XLM.contractId },
+  { contractId: MAINNET_ASSETS.USDC.contractId },
+  "10000000"
+);
+const result = await agent.dexSwap(quote);
+console.log("Swap tx hash:", result.hash);`,
   },
 }
 
@@ -269,7 +316,7 @@ export default function DevKitPage() {
   return (
     <main className="relative min-h-screen bg-black text-white overflow-hidden">
       <Navbar />
-
+      <PageTransition>
       <section className="relative z-20 py-16 md:py-24">
         <div className="mx-auto w-full max-w-4xl px-6 sm:px-8 lg:px-12">
           <header className="mb-12">
@@ -610,6 +657,7 @@ npm install stellar-devkit-mcp
           </Tabs>
         </div>
       </section>
+      </PageTransition>
     </main>
   )
 }

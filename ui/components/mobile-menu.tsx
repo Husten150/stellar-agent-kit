@@ -26,48 +26,60 @@ export function MobileMenu() {
           <Menu className="w-6 h-6" />
         </button>
       </SheetTrigger>
-      <SheetContent side="right" className="bg-zinc-950 border-zinc-800">
-        <div className="flex flex-col gap-6 pt-8">
-          <div className="pb-4 border-b border-zinc-800">
+      <SheetContent side="right" className="bg-zinc-950 border-zinc-800 w-full max-w-xs">
+        <div className="flex flex-col gap-1 pt-8">
+          <div className="pb-4 mb-2 border-b border-zinc-800">
             <WalletData />
           </div>
           <button
             type="button"
             onClick={() => scrollTo("hero")}
-            className="text-left text-lg text-white hover:text-zinc-300 transition-colors"
+            className="text-left py-3 px-3 text-base text-white hover:text-zinc-200 hover:bg-white/5 rounded-lg transition-colors"
           >
             Home
           </button>
           <button
             type="button"
             onClick={() => scrollTo("capabilities")}
-            className="text-left text-lg text-white hover:text-zinc-300 transition-colors"
+            className="text-left py-3 px-3 text-base text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
           >
             Capabilities
           </button>
+          <span className="mt-2 mb-1 px-3 text-xs font-medium text-zinc-500 uppercase tracking-wider">
+            Resources
+          </span>
+          <Link
+            href="/docs"
+            onClick={() => setOpen(false)}
+            className="text-left py-3 px-3 text-base text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+          >
+            Docs
+          </Link>
           <Link
             href="/devkit"
             onClick={() => setOpen(false)}
-            className="text-left text-lg text-white hover:text-zinc-300 transition-colors"
+            className="text-left py-3 px-3 text-base text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
           >
             DevKit
           </Link>
           <Link
             href="/swap"
             onClick={() => setOpen(false)}
-            className="text-left text-lg text-white hover:text-zinc-300 transition-colors"
+            className="text-left py-3 px-3 text-base text-zinc-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
           >
             Swap
           </Link>
-          <a
-            href="https://github.com/stellar/stellar-agent-kit"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
-            className="text-lg text-[#5100fd] hover:text-[#6610ff] transition-colors"
-          >
-            Get started
-          </a>
+          <div className="mt-4 pt-4 border-t border-zinc-800">
+            <a
+              href="https://github.com/stellar/stellar-agent-kit"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block text-center py-3 rounded-lg border border-[#5100fd] bg-[#5100fd]/30 text-[#a78bfa] font-medium hover:bg-[#5100fd]/50 transition-colors"
+            >
+              Get started
+            </a>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

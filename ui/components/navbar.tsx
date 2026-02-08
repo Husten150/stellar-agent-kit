@@ -38,34 +38,56 @@ export function Navbar() {
         isVisible ? "top-8 opacity-100" : "-top-24 opacity-0"
       }`}
     >
-      <div className="bg-black/50 backdrop-blur-[120px] rounded-full px-8 py-3 flex items-center gap-8 shadow-lg border border-white/10 w-full">
-        {/* Logo */}
-        <button
-          type="button"
-          onClick={() => scrollTo("hero")}
-          className="flex items-center text-xl font-semibold text-white hover:text-zinc-300 transition-colors"
-        >
-          Warly
-        </button>
+      <div className="bg-black/60 backdrop-blur-[120px] rounded-full px-6 py-2.5 flex items-center justify-between gap-6 shadow-lg shadow-black/20 border border-white/10 w-full">
+        {/* Left: Logo + Docs, DevKit */}
+        <div className="hidden md:flex items-center gap-6">
+          <button
+            type="button"
+            onClick={() => scrollTo("hero")}
+            className="flex items-center text-xl font-semibold text-white hover:text-zinc-200 transition-colors shrink-0"
+          >
+            Warly
+          </button>
+          <div className="h-4 w-px bg-white/10" aria-hidden />
+          <div className="flex items-center gap-1">
+            <Link
+              href="/docs"
+              className="px-3 py-2 text-sm text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+            >
+              Docs
+            </Link>
+            <Link
+              href="/devkit"
+              className="px-3 py-2 text-sm text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+            >
+              DevKit
+            </Link>
+          </div>
+        </div>
 
-        {/* Desktop Menu Links */}
-        <div className="hidden md:flex items-center justify-end gap-4 flex-1 pr-4">
+        {/* Mobile: logo only on left */}
+        <div className="flex md:hidden items-center">
+          <button
+            type="button"
+            onClick={() => scrollTo("hero")}
+            className="text-lg font-semibold text-white hover:text-zinc-300 transition-colors"
+          >
+            Warly
+          </button>
+        </div>
+
+        {/* Right: Capabilities, Swap, Wallet, CTA */}
+        <div className="hidden md:flex items-center gap-2">
           <button
             type="button"
             onClick={() => scrollTo("capabilities")}
-            className="px-4 py-2 text-white hover:text-zinc-300 transition-colors"
+            className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
           >
             Capabilities
           </button>
           <Link
-            href="/devkit"
-            className="px-4 py-2 text-white hover:text-zinc-300 transition-colors"
-          >
-            DevKit
-          </Link>
-          <Link
             href="/swap"
-            className="px-4 py-2 text-white hover:text-zinc-300 transition-colors"
+            className="px-3 py-2 text-sm text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-white/5"
           >
             Swap
           </Link>
@@ -74,7 +96,7 @@ export function Navbar() {
             href="https://github.com/stellar/stellar-agent-kit"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-[18px] py-[10px] rounded-full border border-[#5100fd] bg-[#5100fd]/50 text-white font-medium hover:scale-105 transition-transform duration-500"
+            className="ml-2 px-4 py-2 rounded-full border border-[#5100fd] bg-[#5100fd]/40 text-white text-sm font-medium hover:bg-[#5100fd]/60 transition-colors"
           >
             Get started
           </a>

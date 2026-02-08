@@ -1,11 +1,13 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { CircleArrowRight, ArrowRight } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Navbar } from "@/components/navbar"
+import { PageTransition } from "@/components/page-transition"
 import Script from "next/script"
 
 export default function Home() {
@@ -44,7 +46,7 @@ export default function Home() {
       />
 
       <Navbar />
-
+      <PageTransition>
       <div
         className="fixed inset-0 z-0 w-screen h-screen pointer-events-none transition-all duration-100"
         style={{
@@ -182,12 +184,15 @@ export default function Home() {
       </div>
 
       {/* Capabilities section with tabs */}
-      <section id="capabilities" className="relative z-20 py-24">
+      <section id="capabilities" className="relative z-20 py-24 scroll-mt-24">
         <div className="container p-12 rounded-2xl z-50 bg-(#09090b) border border-zinc-800 mx-auto px-6 lg:px-12">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-light mb-6 text-balance">Capabilities</h2>
 
-          <p className="text-lg md:text-xl text-zinc-400 mb-12">
+          <p className="text-lg md:text-xl text-zinc-400 mb-4">
             One CLI. One agent. Four tools powered by Stellar and SoroSwap.
+          </p>
+          <p className="text-sm text-zinc-500 mb-12">
+            Plus: <Link href="/devkit" className="text-zinc-400 hover:text-white underline underline-offset-2">DevKit</Link> (project + key, protocols, code generator, MCP), <Link href="/swap" className="text-zinc-400 hover:text-white underline underline-offset-2">Swap &amp; Send</Link> in the browser with Freighter, x402 payment-gated APIs, and four published npm packages.
           </p>
 
           <Tabs defaultValue="tools" className="w-full">
@@ -426,6 +431,7 @@ export default function Home() {
           </Tabs>
         </div>
       </section>
+      </PageTransition>
     </main>
   )
 }
