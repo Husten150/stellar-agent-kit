@@ -47,4 +47,22 @@ npm publish -w stellar-devkit-mcp
 
 ## Bumping versions
 
-Edit `version` in each package’s `package.json` under `packages/` (e.g. 1.0.1 → 1.0.2), then run `npm run publish:packages` again.
+**Bump all four packages to the next patch version** (e.g. 1.0.1 → 1.0.2) from the repo root:
+
+```bash
+npm run version:packages
+```
+
+Then publish:
+
+```bash
+npm run publish:packages
+```
+
+To bump a single package or use minor/major:
+
+```bash
+npm version patch -w stellar-agent-kit    # 1.0.1 → 1.0.2
+npm version minor -w stellar-agent-kit   # 1.0.1 → 1.1.0
+npm version major -w stellar-agent-kit   # 1.0.1 → 2.0.0
+```
