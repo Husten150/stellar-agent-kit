@@ -8,13 +8,13 @@ import { DocsAssistant } from "@/components/docs-assistant"
 
 export default function DocsPage() {
   return (
-    <main className="relative min-h-screen bg-black text-white overflow-hidden">
+    <main className="relative min-h-screen bg-black text-white overflow-x-hidden">
       <Navbar />
       <PageTransition>
-        <div className="relative z-20 flex pt-28">
+        <div className="relative z-20 flex min-h-screen pt-0 pb-8 items-stretch">
           <DocsSidebar />
-          <article className="flex-1 min-w-0 px-6 md:px-10 lg:px-12 pb-24 max-w-3xl">
-            <span className="text-emerald-500 text-sm font-medium">Introduction</span>
+          <article className="flex-1 min-w-0 pt-28 px-6 md:px-8 lg:px-10 xl:px-12 pb-24">
+            <span className="text-[#a78bfa] text-sm font-medium">Introduction</span>
             <header className="mb-10 mt-1">
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
                 Stellar DevKit documentation
@@ -27,7 +27,7 @@ export default function DocsPage() {
           {/* ─── Guide cards (Mantle-style numbered sections) ────────────── */}
           <section className="mb-14">
             <h2 className="sr-only">Documentation guide</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               <a href="#getting-started" className="group block rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 hover:border-[#5100fd]/50 hover:bg-zinc-900 transition-colors">
                 <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">— 01</span>
                 <h3 className="mt-2 text-xl font-semibold text-white group-hover:text-[#a78bfa] transition-colors">Getting Started</h3>
@@ -74,7 +74,7 @@ export default function DocsPage() {
               <li><strong className="text-zinc-300">create-stellar-devkit-app</strong> — CLI to scaffold agent-kit (Next.js + StellarAgentKit) or x402-api (Express + paywall).</li>
             </ul>
             <p className="text-zinc-500 text-sm">
-              Network: <code className="rounded bg-zinc-800 px-1">mainnet</code> only for stellar-agent-kit DEX/lending. x402 supports <code className="rounded bg-zinc-800 px-1">testnet</code> and <code className="rounded bg-zinc-800 px-1">mainnet</code>.
+              Network: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">mainnet</code> only for stellar-agent-kit DEX/lending. x402 supports <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">testnet</code> and <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">mainnet</code>.
             </p>
 
             <h3 className="text-lg font-semibold text-white mt-8 mb-3">Package Summary</h3>
@@ -101,7 +101,7 @@ export default function DocsPage() {
           <section id="getting-started" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">Getting Started</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              Install the SDK, set environment variables, then create an agent and call <code className="rounded bg-zinc-800 px-1">initialize()</code> before any protocol method. Or scaffold an app with the CLI.
+              Install the SDK, set environment variables, then create an agent and call <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">initialize()</code> before any protocol method. Or scaffold an app with the CLI.
             </p>
           </section>
 
@@ -109,17 +109,17 @@ export default function DocsPage() {
           <section id="quick-start" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">Quick start</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              Install the SDK, set env vars, then create an agent and call <code className="rounded bg-zinc-800 px-1">initialize()</code> before any protocol method.
+              Install the SDK, set env vars, then create an agent and call <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">initialize()</code> before any protocol method.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`npm install stellar-agent-kit`}
             </pre>
-            <p className="text-zinc-500 text-sm mb-2">Required env (e.g. in <code className="rounded bg-zinc-800 px-1">.env</code>):</p>
+            <p className="text-zinc-500 text-sm mb-2">Required env (e.g. in <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">.env</code>):</p>
             <ul className="text-zinc-500 text-sm list-disc list-inside mb-4">
-              <li><code className="rounded bg-zinc-800 px-1">SECRET_KEY</code> — Stellar secret key (S...). Keep server-side only.</li>
-              <li><code className="rounded bg-zinc-800 px-1">SOROSWAP_API_KEY</code> — Required for DEX quotes (get from SoroSwap aggregator).</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SECRET_KEY</code> — Stellar secret key (S...). Keep server-side only.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SOROSWAP_API_KEY</code> — Required for DEX quotes (get from SoroSwap aggregator).</li>
             </ul>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
 
 const agent = new StellarAgentKit(process.env.SECRET_KEY!, "mainnet");
@@ -135,7 +135,7 @@ const result = await agent.dexSwap(quote);
 console.log(result.hash);`}
             </pre>
             <p className="text-zinc-500 text-sm">
-              Or scaffold an app: <code className="rounded bg-zinc-800 px-1">npx create-stellar-devkit-app my-app</code> and choose agent-kit or x402-api.
+              Or scaffold an app: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npx create-stellar-devkit-app my-app</code> and choose agent-kit or x402-api.
             </p>
           </section>
 
@@ -143,7 +143,7 @@ console.log(result.hash);`}
           <section id="stellar-agent-kit" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">stellar-agent-kit</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              <code className="rounded bg-zinc-800 px-1">npm install stellar-agent-kit</code>. One class <code className="rounded bg-zinc-800 px-1">StellarAgentKit(secretKey, network)</code>; call <code className="rounded bg-zinc-800 px-1">await agent.initialize()</code> once, then use methods below.
+              <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm install stellar-agent-kit</code>. One class <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">StellarAgentKit(secretKey, network)</code>; call <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">await agent.initialize()</code> once, then use methods below.
             </p>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Supported Protocols</h3>
@@ -169,8 +169,8 @@ console.log(result.hash);`}
             </div>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">getBalances(accountId?)</h3>
-            <p className="text-zinc-400 text-sm mb-2">Native + trustline balances. Omit <code className="rounded bg-zinc-800 px-1">accountId</code> to use the agent&apos;s public key.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">Native + trustline balances. Omit <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">accountId</code> to use the agent&apos;s public key.</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`const balances = await agent.getBalances();
 // or: await agent.getBalances("G...");
 // → [{ assetCode: "XLM", balance: "100.5", issuer?: string, limit?: string }, ...]`}
@@ -178,7 +178,7 @@ console.log(result.hash);`}
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">sendPayment(to, amount, assetCode?, assetIssuer?)</h3>
             <p className="text-zinc-400 text-sm mb-2">Send XLM or custom asset. Omit asset for native XLM.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`await agent.sendPayment("G...", "10");
 await agent.sendPayment("G...", "5", "USDC", "G...");  // custom asset
 // → { hash: "..." }`}
@@ -186,14 +186,14 @@ await agent.sendPayment("G...", "5", "USDC", "G...");  // custom asset
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">createAccount(destination, startingBalance)</h3>
             <p className="text-zinc-400 text-sm mb-2">Create and fund a new account (minimum ~1 XLM for base reserve).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`await agent.createAccount("G...", "1");
 // → { hash: "..." }`}
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">pathPayment(sendAsset, sendMax, destination, destAsset, destAmount, path?)</h3>
-            <p className="text-zinc-400 text-sm mb-2">Path payment strict receive: send up to <code className="rounded bg-zinc-800 px-1">sendMax</code> of sendAsset so destination receives exactly <code className="rounded bg-zinc-800 px-1">destAmount</code> of destAsset.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">Path payment strict receive: send up to <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">sendMax</code> of sendAsset so destination receives exactly <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">destAmount</code> of destAsset.</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`await agent.pathPayment(
   { assetCode: "XLM" },           // send asset
   "10",                           // sendMax
@@ -207,7 +207,7 @@ await agent.sendPayment("G...", "5", "USDC", "G...");  // custom asset
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">dexGetQuote(fromAsset, toAsset, amount) / dexSwap(quote) / dexSwapExactIn(...)</h3>
             <p className="text-zinc-400 text-sm mb-2">SoroSwap aggregator. Amount in smallest units (e.g. 7 decimals for XLM).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`const quote = await agent.dexGetQuote(
   { contractId: MAINNET_ASSETS.XLM.contractId },
   { contractId: MAINNET_ASSETS.USDC.contractId },
@@ -220,15 +220,15 @@ await agent.dexSwapExactIn(fromAsset, toAsset, amount);`}
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">getPrice(asset)</h3>
-            <p className="text-zinc-400 text-sm mb-2">Reflector oracle. Asset: <code className="rounded bg-zinc-800 px-1">{`{ symbol: "XLM" }`}</code> or <code className="rounded bg-zinc-800 px-1">{`{ contractId: "C..." }`}</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">Reflector oracle. Asset: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">{`{ symbol: "XLM" }`}</code> or <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">{`{ contractId: "C..." }`}</code>.</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`const price = await agent.getPrice({ symbol: "XLM" });
 // → PriceData`}
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">lendingSupply(args) / lendingBorrow(args)</h3>
-            <p className="text-zinc-400 text-sm mb-2">Blend protocol. See exported types <code className="rounded bg-zinc-800 px-1">LendingSupplyArgs</code>, <code className="rounded bg-zinc-800 px-1">LendingBorrowArgs</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">Blend protocol. See exported types <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">LendingSupplyArgs</code>, <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">LendingBorrowArgs</code>.</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`await agent.lendingSupply({ ... });
 await agent.lendingBorrow({ ... });`}
             </pre>
@@ -238,30 +238,30 @@ await agent.lendingBorrow({ ... });`}
           <section id="x402-stellar-sdk" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">x402-stellar-sdk</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              <code className="rounded bg-zinc-800 px-1">npm install x402-stellar-sdk</code>. Protect routes with a Stellar payment; client detects 402 and can retry with <code className="rounded bg-zinc-800 px-1">payWithStellar</code>.
+              <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm install x402-stellar-sdk</code>. Protect routes with a Stellar payment; client detects 402 and can retry with <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">payWithStellar</code>.
             </p>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Features</h3>
             <ul className="text-zinc-400 text-sm list-disc list-inside space-y-1 mb-4">
               <li>Paywall middleware: return HTTP 402 with payment details (amount, asset, destination, network).</li>
               <li>Server integrations: Express, Hono, Next.js App Router.</li>
-              <li>Client <code className="rounded bg-zinc-800 px-1">x402Fetch</code>: on 402, calls <code className="rounded bg-zinc-800 px-1">payWithStellar</code>, retries with <code className="rounded bg-zinc-800 px-1">X-402-Transaction-Hash</code>.</li>
+              <li>Client <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">x402Fetch</code>: on 402, calls <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">payWithStellar</code>, retries with <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">X-402-Transaction-Hash</code>.</li>
               <li>Horizon-based verification of payment before serving content.</li>
               <li>Supports mainnet and testnet; native XLM or custom assets (e.g. USDC).</li>
             </ul>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Server options (X402StellarOptions)</h3>
             <ul className="text-zinc-400 text-sm list-disc list-inside mb-4">
-              <li><code className="rounded bg-zinc-800 px-1">price</code> — Amount string (e.g. &quot;1&quot;, &quot;10.5&quot;)</li>
-              <li><code className="rounded bg-zinc-800 px-1">assetCode</code> — e.g. &quot;XLM&quot;, &quot;USDC&quot;</li>
-              <li><code className="rounded bg-zinc-800 px-1">issuer?</code> — For custom assets; omit for native XLM</li>
-              <li><code className="rounded bg-zinc-800 px-1">network</code> — &quot;mainnet&quot; | &quot;testnet&quot;</li>
-              <li><code className="rounded bg-zinc-800 px-1">destination</code> — Stellar account (G...) that receives payment</li>
-              <li><code className="rounded bg-zinc-800 px-1">memo?</code> — Optional memo for correlation</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">price</code> — Amount string (e.g. &quot;1&quot;, &quot;10.5&quot;)</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">assetCode</code> — e.g. &quot;XLM&quot;, &quot;USDC&quot;</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">issuer?</code> — For custom assets; omit for native XLM</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">network</code> — &quot;mainnet&quot; | &quot;testnet&quot;</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">destination</code> — Stellar account (G...) that receives payment</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">memo?</code> — Optional memo for correlation</li>
             </ul>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Express</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`import express from "express";
 import { x402 } from "x402-stellar-sdk/server";
 
@@ -279,7 +279,7 @@ app.listen(3000);`}
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Hono</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`import { Hono } from "hono";
 import { x402Hono } from "x402-stellar-sdk/server/hono";
 
@@ -289,7 +289,7 @@ app.get("/api/premium", (c) => c.json({ data: "Premium content" }));`}
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Next.js App Router</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`// app/api/premium/route.ts
 import { withX402 } from "x402-stellar-sdk/server/next";
 
@@ -301,8 +301,8 @@ export async function GET(req: Request) {
             </pre>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Client: x402Fetch</h3>
-            <p className="text-zinc-400 text-sm mb-2">On 402, the client must provide <code className="rounded bg-zinc-800 px-1">payWithStellar</code> to perform the payment and return the transaction hash; then the request is retried with <code className="rounded bg-zinc-800 px-1">X-402-Transaction-Hash</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">On 402, the client must provide <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">payWithStellar</code> to perform the payment and return the transaction hash; then the request is retried with <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">X-402-Transaction-Hash</code>.</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`import { x402Fetch } from "x402-stellar-sdk/client";
 import type { X402PaymentRequest, X402PaymentResponse } from "x402-stellar-sdk/client";
 
@@ -321,9 +321,9 @@ const data = await res.json();`}
           <section id="create-stellar-devkit-app" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">create-stellar-devkit-app</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              <code className="rounded bg-zinc-800 px-1">npx create-stellar-devkit-app [name]</code>. Prompts for project name and template if not provided.
+              <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npx create-stellar-devkit-app [name]</code>. Prompts for project name and template if not provided.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`npx create-stellar-devkit-app my-app
 npx create-stellar-devkit-app my-app --agent-kit
 npx create-stellar-devkit-app my-api --x402-api
@@ -331,8 +331,8 @@ npx create-stellar-devkit-app my-app --skip-install`}
             </pre>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Templates</h3>
             <ul className="text-zinc-400 text-sm space-y-2 mb-4">
-              <li><strong className="text-zinc-300">agent-kit</strong> — Next.js app with stellar-agent-kit: quote API route, swap UI. Env: <code className="rounded bg-zinc-800 px-1">SECRET_KEY</code>, <code className="rounded bg-zinc-800 px-1">SOROSWAP_API_KEY</code>.</li>
-              <li><strong className="text-zinc-300">x402-api</strong> — Express server with one premium route. Env: <code className="rounded bg-zinc-800 px-1">X402_DESTINATION</code> (your G...), <code className="rounded bg-zinc-800 px-1">NETWORK</code> (testnet|mainnet).</li>
+              <li><strong className="text-zinc-300">agent-kit</strong> — Next.js app with stellar-agent-kit: quote API route, swap UI. Env: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SECRET_KEY</code>, <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SOROSWAP_API_KEY</code>.</li>
+              <li><strong className="text-zinc-300">x402-api</strong> — Express server with one premium route. Env: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">X402_DESTINATION</code> (your G...), <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">NETWORK</code> (testnet|mainnet).</li>
             </ul>
           </section>
 
@@ -340,14 +340,14 @@ npx create-stellar-devkit-app my-app --skip-install`}
           <section id="stellar-devkit-mcp" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">stellar-devkit-mcp</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              <code className="rounded bg-zinc-800 px-1">npm install stellar-devkit-mcp</code>. MCP server for Cursor/Claude: tools and resources for Stellar contracts and SDK snippets.
+              <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm install stellar-devkit-mcp</code>. MCP server for Cursor/Claude: tools and resources for Stellar contracts and SDK snippets.
             </p>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Tools</h3>
             <ul className="text-zinc-400 text-sm space-y-2 mb-4">
-              <li><code className="rounded bg-zinc-800 px-1">get_stellar_contract</code> — protocol (e.g. soroswap), network (mainnet). Returns contract ID.</li>
-              <li><code className="rounded bg-zinc-800 px-1">get_sdk_snippet</code> — operation: swap, quote, x402-server, x402-client, get-balances, send-payment, create-account, path-payment. Returns copy-paste code.</li>
-              <li><code className="rounded bg-zinc-800 px-1">get_quote</code> — fromAsset, toAsset, amount. Live quote (requires SOROSWAP_API_KEY where MCP runs).</li>
-              <li><code className="rounded bg-zinc-800 px-1">list_devkit_methods</code> — Lists StellarAgentKit and x402-stellar-sdk public APIs.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">get_stellar_contract</code> — protocol (e.g. soroswap), network (mainnet). Returns contract ID.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">get_sdk_snippet</code> — operation: swap, quote, x402-server, x402-client, get-balances, send-payment, create-account, path-payment. Returns copy-paste code.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">get_quote</code> — fromAsset, toAsset, amount. Live quote (requires SOROSWAP_API_KEY where MCP runs).</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">list_devkit_methods</code> — Lists StellarAgentKit and x402-stellar-sdk public APIs.</li>
             </ul>
             <p className="text-zinc-400 text-sm mb-2">Add to Cursor MCP config; use a new chat so tools are attached. See <Link href="/devkit" className="text-[#a78bfa] hover:underline">DevKit</Link> → MCP tab.</p>
           </section>
@@ -356,20 +356,20 @@ npx create-stellar-devkit-app my-app --skip-install`}
           <section id="cli" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">CLI</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              From repo root after <code className="rounded bg-zinc-800 px-1">npm run build:root</code> (or full build). Commands live in <code className="rounded bg-zinc-800 px-1">src/</code> and are run via <code className="rounded bg-zinc-800 px-1">node dist/index.js &lt;command&gt;</code>.
+              From repo root after <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run build:root</code> (or full build). Commands live in <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">src/</code> and are run via <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">node dist/index.js &lt;command&gt;</code>.
             </p>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">balance</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`node dist/index.js balance GABC... [--network=testnet|mainnet]
 # Output: JSON array of { code, issuer, balance }`}
             </pre>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">pay</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`node dist/index.js pay <SECRET_KEY> <DESTINATION_G...> <amount> [--network=mainnet] [--asset=USDC] [--issuer=G...]`}
             </pre>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">agent</h3>
-            <p className="text-zinc-400 text-sm mb-2">Interactive chat with tools: check_balance, swap_asset, get_swap_quote, create_trustline. Uses <code className="rounded bg-zinc-800 px-1">GROQ_API_KEY</code> or <code className="rounded bg-zinc-800 px-1">--api-key</code> (OpenAI-compatible).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto mb-4">
+            <p className="text-zinc-400 text-sm mb-2">Interactive chat with tools: check_balance, swap_asset, get_swap_quote, create_trustline. Uses <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">GROQ_API_KEY</code> or <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">--api-key</code> (OpenAI-compatible).</p>
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
 {`node dist/index.js agent [--api-key <key>]
 # At prompt: "What's the balance of G...?" or "Get a quote to swap 10 XLM to USDC"`}
             </pre>
@@ -379,24 +379,24 @@ npx create-stellar-devkit-app my-app --skip-install`}
           <section id="ui-and-apis" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">UI & APIs</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              This app (Warly) provides Swap and Send with Freighter; the backend builds transactions and you sign in the wallet. No secret key in the browser.
+              This app (Orbit) provides Swap and Send with Freighter; the backend builds transactions and you sign in the wallet. No secret key in the browser.
             </p>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Swap</h3>
             <ul className="text-zinc-400 text-sm space-y-1 list-disc list-inside mb-4">
-              <li>POST <code className="rounded bg-zinc-800 px-1">/api/swap/quote</code> — Body: from, to, amount, network. Returns quote.</li>
-              <li>POST <code className="rounded bg-zinc-800 px-1">/api/swap/build</code> — Build swap transaction.</li>
-              <li>POST <code className="rounded bg-zinc-800 px-1">/api/swap/submit</code> — Submit signed transaction.</li>
+              <li>POST <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/swap/quote</code> — Body: from, to, amount, network. Returns quote.</li>
+              <li>POST <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/swap/build</code> — Build swap transaction.</li>
+              <li>POST <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/swap/submit</code> — Submit signed transaction.</li>
             </ul>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Send</h3>
             <ul className="text-zinc-400 text-sm space-y-1 list-disc list-inside mb-4">
-              <li>POST <code className="rounded bg-zinc-800 px-1">/api/send/build</code> — Build payment transaction.</li>
-              <li>POST <code className="rounded bg-zinc-800 px-1">/api/send/submit</code> — Submit signed payment.</li>
+              <li>POST <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/send/build</code> — Build payment transaction.</li>
+              <li>POST <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/send/submit</code> — Submit signed payment.</li>
             </ul>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Other</h3>
             <ul className="text-zinc-400 text-sm space-y-1 list-disc list-inside mb-4">
-              <li>GET <code className="rounded bg-zinc-800 px-1">/api/balance?address=...&network=...</code> — Account balances.</li>
-              <li>GET <code className="rounded bg-zinc-800 px-1">/api/price</code> — Price endpoint (if implemented).</li>
-              <li>GET <code className="rounded bg-zinc-800 px-1">/api/v1/validate?appId=...</code> — DevKit project validation.</li>
+              <li>GET <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/balance?address=...&network=...</code> — Account balances.</li>
+              <li>GET <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/price</code> — Price endpoint (if implemented).</li>
+              <li>GET <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">/api/v1/validate?appId=...</code> — DevKit project validation.</li>
             </ul>
             <p className="text-zinc-400 text-sm">
               <Link href="/devkit" className="text-[#a78bfa] hover:underline">DevKit</Link>: create project (APP Id, API endpoint), Protocols, Code generator, MCP tab.
@@ -420,7 +420,11 @@ npx create-stellar-devkit-app my-app --skip-install`}
                   <tr className="border-b border-zinc-800"><td className="p-3 font-mono">SOROSWAP_API_KEY</td><td className="p-3">stellar-agent-kit, agent-kit template, MCP get_quote</td><td className="p-3">Required for DEX quotes.</td></tr>
                   <tr className="border-b border-zinc-800"><td className="p-3 font-mono">X402_DESTINATION</td><td className="p-3">x402-api template, x402 server</td><td className="p-3">Stellar account (G...) that receives payments.</td></tr>
                   <tr className="border-b border-zinc-800"><td className="p-3 font-mono">NETWORK</td><td className="p-3">x402-api template</td><td className="p-3">testnet | mainnet.</td></tr>
-                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET</td><td className="p-3">ui (Pricing)</td><td className="p-3">Razorpay keys for checkout and verify.</td></tr>
+                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">DODO_PAYMENTS_API_KEY</td><td className="p-3">ui (Pricing)</td><td className="p-3">Dodo Payments API key (Bearer). From Dashboard → Developer → API Keys.</td></tr>
+                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">DODO_PAYMENTS_WEBHOOK_SECRET</td><td className="p-3">ui (Pricing webhook)</td><td className="p-3">Webhook signing secret for payment.succeeded. From Settings → Webhooks.</td></tr>
+                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">DODO_PAYMENTS_PRODUCT_BUILDER</td><td className="p-3">ui (Pricing)</td><td className="p-3">Dodo product ID for Builder plan (create one-time product in dashboard).</td></tr>
+                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">DODO_PAYMENTS_PRODUCT_PRO</td><td className="p-3">ui (Pricing)</td><td className="p-3">Dodo product ID for Pro plan (create one-time product in dashboard).</td></tr>
+                  <tr className="border-b border-zinc-800"><td className="p-3 font-mono">DODO_PAYMENTS_ENVIRONMENT</td><td className="p-3">ui (Pricing)</td><td className="p-3">Optional: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">test_mode</code> or <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">live_mode</code>. Default: test_mode.</td></tr>
                   <tr className="border-b border-zinc-800"><td className="p-3 font-mono">GROQ_API_KEY</td><td className="p-3">CLI agent, Docs assistant</td><td className="p-3">Or OPENAI_API_KEY for docs assistant; CLI can use --api-key.</td></tr>
                   <tr><td className="p-3 font-mono">OPENAI_API_KEY</td><td className="p-3">Docs assistant</td><td className="p-3">Optional; used if GROQ_API_KEY is not set.</td></tr>
                 </tbody>
@@ -500,23 +504,23 @@ npx create-stellar-devkit-app my-app --skip-install`}
                 </tbody>
               </table>
             </div>
-            <p className="text-zinc-500 text-sm">Use <code className="rounded bg-zinc-800 px-1">MAINNET_ASSETS</code> from <code className="rounded bg-zinc-800 px-1">stellar-agent-kit</code> in code.</p>
+            <p className="text-zinc-500 text-sm">Use <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">MAINNET_ASSETS</code> from <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">stellar-agent-kit</code> in code.</p>
           </section>
 
           {/* ─── Project structure ──────────────────────────────────────── */}
           <section id="project-structure" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">Project structure</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              Monorepo layout. Packages are under <code className="rounded bg-zinc-800 px-1">packages/</code>; UI and SDK frontend under <code className="rounded bg-zinc-800 px-1">ui/</code> and <code className="rounded bg-zinc-800 px-1">sdk-fe/</code>.
+              Monorepo layout. Packages are under <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">packages/</code>; UI and SDK frontend under <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">ui/</code> and <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">sdk-fe/</code>.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-300 font-mono overflow-x-auto">
+            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto whitespace-pre leading-relaxed">
 {`stellar-agent-kit/
 ├── packages/
 │   ├── x402-stellar-sdk/     # HTTP 402 server + client
 │   ├── stellar-agent-kit/    # DeFi SDK (DEX, lending, oracles)
 │   ├── create-stellar-devkit-app/  # CLI + templates
 │   └── stellar-devkit-mcp/   # MCP server
-├── ui/                       # Next.js app (Warly)
+├── ui/                       # Next.js app (Orbit)
 ├── sdk-fe/                   # SDK docs / package pages
 └── docs/                     # REFERENCE_MANTLE_DEVKIT, etc.`}
             </pre>
@@ -526,14 +530,14 @@ npx create-stellar-devkit-app my-app --skip-install`}
           <section id="development" className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-semibold text-white mb-4">Development</h2>
             <p className="text-zinc-400 leading-relaxed mb-4">
-              From the repo root. Use <code className="rounded bg-zinc-800 px-1">npm run build:root</code> or full build before running CLI or MCP.
+              From the repo root. Use <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run build:root</code> or full build before running CLI or MCP.
             </p>
             <ul className="text-zinc-400 text-sm space-y-2 list-disc list-inside mb-4">
-              <li><code className="rounded bg-zinc-800 px-1">npm install</code> — Install dependencies (root + workspaces).</li>
-              <li><code className="rounded bg-zinc-800 px-1">npm run build</code> / <code className="rounded bg-zinc-800 px-1">npm run build:root</code> — Build packages and CLI.</li>
-              <li><code className="rounded bg-zinc-800 px-1">npm run typecheck</code> — TypeScript check.</li>
-              <li><code className="rounded bg-zinc-800 px-1">npm run lint</code> — Lint.</li>
-              <li><code className="rounded bg-zinc-800 px-1">npm run dev</code> — Run UI dev server (e.g. <code className="rounded bg-zinc-800 px-1">ui/</code> or root script).</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm install</code> — Install dependencies (root + workspaces).</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run build</code> / <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run build:root</code> — Build packages and CLI.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run typecheck</code> — TypeScript check.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run lint</code> — Lint.</li>
+              <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run dev</code> — Run UI dev server (e.g. <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">ui/</code> or root script).</li>
             </ul>
           </section>
 
@@ -544,7 +548,7 @@ npx create-stellar-devkit-app my-app --skip-install`}
               <li><Link href="/docs" className="text-[#a78bfa] hover:underline">Docs</Link> — This documentation.</li>
               <li><Link href="/devkit" className="text-[#a78bfa] hover:underline">DevKit</Link> — Create project, Protocols, Code generator, MCP.</li>
               <li><Link href="/swap" className="text-[#a78bfa] hover:underline">Try Swap</Link> — Swap UI with Freighter.</li>
-              <li><Link href="/pricing" className="text-[#a78bfa] hover:underline">Pricing</Link> — Plans and Razorpay.</li>
+              <li><Link href="/pricing" className="text-[#a78bfa] hover:underline">Pricing</Link> — Plans and Dodo Payments.</li>
               <li>Stellar docs: <a href="https://developers.stellar.org" target="_blank" rel="noopener noreferrer" className="text-[#a78bfa] hover:underline">developers.stellar.org</a>.</li>
               <li>Explorer: <a href="https://stellar.expert" target="_blank" rel="noopener noreferrer" className="text-[#a78bfa] hover:underline">stellar.expert</a>.</li>
             </ul>
@@ -552,12 +556,14 @@ npx create-stellar-devkit-app my-app --skip-install`}
 
           <section className="border-t border-zinc-800 pt-8">
             <p className="text-zinc-500 text-sm">
-              Pricing and access gating: see <Link href="/pricing" className="text-[#a78bfa] hover:underline">Pricing</Link>. For repo features and testing, see <code className="rounded bg-zinc-800 px-1">FLOWCHART.md</code> and <code className="rounded bg-zinc-800 px-1">docs/REFERENCE_MANTLE_DEVKIT.md</code>.
+              Pricing and access gating: see <Link href="/pricing" className="text-[#a78bfa] hover:underline">Pricing</Link>. For repo features and testing, see <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">FLOWCHART.md</code> and <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">docs/REFERENCE_MANTLE_DEVKIT.md</code>.
             </p>
           </section>
         </article>
-        <aside className="w-80 shrink-0 hidden lg:block sticky top-24 self-start h-[calc(100vh-6rem)] border-l border-zinc-800">
-          <DocsAssistant />
+        <aside className="w-96 min-w-80 shrink-0 hidden lg:flex self-stretch flex-col min-h-screen border-l border-zinc-800">
+          <div className="pt-28 flex-1 min-h-0 flex flex-col overflow-hidden">
+            <DocsAssistant />
+          </div>
         </aside>
       </div>
       </PageTransition>

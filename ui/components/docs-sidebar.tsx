@@ -35,8 +35,8 @@ export function DocsSidebar() {
   const isDocs = pathname === "/docs"
 
   return (
-    <aside className="w-56 shrink-0 hidden md:block border-r border-zinc-800 bg-zinc-950/60">
-      <nav className="sticky top-24 py-6 pl-6 pr-3 overflow-y-auto max-h-[calc(100vh-6rem)]">
+    <aside className="w-64 shrink-0 hidden md:block border-r border-zinc-800 bg-zinc-950/60 self-stretch flex flex-col min-h-screen">
+      <nav className="flex-1 min-h-0 overflow-y-auto pt-28 pb-6 pl-5 pr-3">
         <p className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-4">On this page</p>
         <ul className="space-y-1 text-sm">
           {SECTIONS.map(({ id, label }) => (
@@ -45,7 +45,7 @@ export function DocsSidebar() {
                 href={isDocs ? `#${id}` : `/docs#${id}`}
                 className={`block py-1.5 px-2 rounded-md transition-colors ${
                   activeId === id
-                    ? "text-emerald-500 font-medium bg-emerald-500/10"
+                    ? "text-[#a78bfa] font-medium bg-[#5100fd]/10"
                     : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
                 }`}
               >

@@ -1,6 +1,6 @@
 /**
- * Minimal subscription state for Razorpay plans.
- * In production replace with a database (e.g. by order_id or user_id).
+ * Minimal subscription state for Dodo Payments plans.
+ * Key is payment_id (or order_id from client). In production replace with a database.
  */
 
 export type PlanId = "free" | "builder" | "pro";

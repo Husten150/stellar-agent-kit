@@ -1,26 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import Script from "next/script"
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { Navbar } from "@/components/navbar"
 import { PageTransition } from "@/components/page-transition"
 import { Check } from "lucide-react"
-
-declare global {
-  interface Window {
-    Razorpay?: new (options: {
-      key: string
-      order_id: string
-      amount: number
-      currency: string
-      name: string
-      description?: string
-      handler: (res: { razorpay_payment_id: string; razorpay_order_id: string }) => void
-      modal?: { ondismiss: () => void }
-    }) => { open: () => void }
-  }
-}
 
 const PLANS = [
   {
@@ -56,61 +41,53 @@ const PLANS = [
 ]
 
 export default function PricingPage() {
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [successChecked, setSuccessChecked] = useState(false)
 
-  const openRazorpay = async (planId: string) => {
+  useEffect(() => {
+    const paymentId = searchParams.get("payment_id")
+    const status = searchParams.get("status")
+    if (successChecked || !paymentId || status !== "succeeded") {
+      setSuccessChecked(true)
+      return
+    }
+    setSuccessChecked(true)
+    fetch("/api/dodo/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paymentId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && typeof window !== "undefined") {
+          window.localStorage.setItem("stellar_devkit_plan_order", data.paymentId)
+          window.history.replaceState({}, "", "/pricing?success=1")
+        }
+      })
+      .catch(() => {})
+  }, [searchParams, successChecked])
+
+  const openDodoCheckout = async (planId: string) => {
     setError(null)
     setLoading(planId)
     try {
-      const res = await fetch("/api/razorpay/create-order", {
+      const res = await fetch("/api/dodo/create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ planId }),
       })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error || "Failed to create order")
+        setError(data.error || "Failed to create checkout")
         return
       }
-      const { orderId, amount, currency, key } = data
-      if (!window.Razorpay) {
-        setError("Razorpay checkout not loaded")
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl
         return
       }
-      const rzp = new window.Razorpay({
-        key,
-        order_id: orderId,
-        amount,
-        currency,
-        name: "Stellar DevKit",
-        description: `${data.planId} plan`,
-        handler: async (payment) => {
-          const verifyRes = await fetch("/api/razorpay/verify-subscription", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              orderId: payment.razorpay_order_id,
-              paymentId: payment.razorpay_payment_id,
-              planId: data.planId,
-            }),
-          })
-          const verifyData = await verifyRes.json()
-          if (verifyData.success) {
-            if (typeof window !== "undefined") {
-              window.localStorage.setItem("stellar_devkit_plan_order", payment.razorpay_order_id)
-            }
-            setError(null)
-            window.location.href = "/pricing?success=1"
-          } else {
-            setError(verifyData.error || "Verification failed")
-          }
-        },
-        modal: {
-          ondismiss: () => setLoading(null),
-        },
-      })
-      rzp.open()
+      setError("No checkout URL returned")
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong")
     } finally {
@@ -118,12 +95,10 @@ export default function PricingPage() {
     }
   }
 
+  const showSuccess = searchParams.get("success") === "1"
+
   return (
     <main className="relative min-h-screen bg-black text-white">
-      <Script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="afterInteractive"
-      />
       <Navbar />
       <PageTransition>
         <div className="pt-32 pb-20 px-6 max-w-5xl mx-auto">
@@ -131,6 +106,11 @@ export default function PricingPage() {
           <p className="text-zinc-400 text-center mb-12 max-w-xl mx-auto">
             Choose the plan that fits your build. Upgrade anytime to unlock Pro templates and support.
           </p>
+          {showSuccess && (
+            <div className="mb-6 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm text-center">
+              Payment successful. Your plan is now active.
+            </div>
+          )}
           {error && (
             <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
               {error}
@@ -172,7 +152,7 @@ export default function PricingPage() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => openRazorpay(plan.id)}
+                      onClick={() => openDodoCheckout(plan.id)}
                       disabled={!!loading}
                       className={`inline-flex items-center justify-center w-full rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${
                         plan.primary
@@ -180,7 +160,7 @@ export default function PricingPage() {
                           : "border border-zinc-500 text-white bg-transparent hover:bg-zinc-800/80 hover:border-zinc-400"
                       }`}
                     >
-                      {loading === plan.id ? "Opening…" : plan.cta}
+                      {loading === plan.id ? "Redirecting…" : plan.cta}
                     </button>
                   )}
                 </div>
@@ -188,7 +168,8 @@ export default function PricingPage() {
             ))}
           </div>
           <p className="mt-8 text-center text-sm text-zinc-500">
-            Access gating: Pro-only templates and advanced snippets check your plan. After payment we store your plan; use the same session or pass order_id for API gating.
+            Payments powered by Dodo Payments. After payment we store your plan; use the same session or pass
+            payment_id for API gating.
           </p>
         </div>
       </PageTransition>

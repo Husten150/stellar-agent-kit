@@ -1,0 +1,66 @@
+# Dodo Payments setup (Pricing / subscription)
+
+The Pricing page uses [Dodo Payments](https://dodopayments.com) for checkout. Configure the following so checkout and verification work.
+
+## 1. API key (required)
+
+- **Env name:** `DODO_PAYMENTS_API_KEY`
+- **Where:** [Dodo Dashboard](https://app.dodopayments.com/) → **Developer** → **API Keys**
+- **What:** Create an API key with **write access** so the app can create checkouts and read payments.
+- Add it to `.env.local` (or your deployment env):
+  ```bash
+  DODO_PAYMENTS_API_KEY=your_secret_key_here
+  ```
+
+## 2. Product IDs (required for paid plans)
+
+You must create **two one-time payment products** in the Dodo dashboard (one for Builder, one for Pro), then set their IDs in env.
+
+- **Where:** Dashboard → **Products** → create two products (e.g. "Stellar DevKit – Builder", "Stellar DevKit – Pro") with your desired price and currency (e.g. ₹499 / ₹999).
+- **Env names:**
+  - `DODO_PAYMENTS_PRODUCT_BUILDER` = product ID for the Builder plan (e.g. `prod_xxx`)
+  - `DODO_PAYMENTS_PRODUCT_PRO` = product ID for the Pro plan (e.g. `prod_yyy`)
+- Add to `.env.local`:
+  ```bash
+  DODO_PAYMENTS_PRODUCT_BUILDER=prod_xxxxxxxx
+  DODO_PAYMENTS_PRODUCT_PRO=prod_yyyyyyyy
+  ```
+
+## 3. Environment (test vs live)
+
+- **Env name:** `DODO_PAYMENTS_ENVIRONMENT`
+- **Values:** `test_mode` (default) or `live_mode`
+- Use `test_mode` while developing; switch to `live_mode` for production.
+- Optional; defaults to `test_mode` if unset.
+
+## 4. Return URL base (recommended for production)
+
+- **Env name:** `NEXT_PUBLIC_APP_URL`
+- **What:** Full origin of your app (e.g. `https://yourdomain.com`). Used as the base for the checkout `return_url` so after payment users are sent back to your site.
+- If unset, the app uses the request origin (fine for localhost; set this in production).
+
+## 5. Webhook secret (optional but recommended)
+
+Used to verify `payment.succeeded` webhooks and activate plans even if the user closes the browser before the success page loads.
+
+- **Env name:** `DODO_PAYMENTS_WEBHOOK_SECRET`
+- **Where:** Dashboard → **Settings** → **Webhooks** → Add endpoint → **URL:** `https://yourdomain.com/api/dodo/webhook` → subscribe to **payment.succeeded** → copy the **Signing secret**.
+- Add to env:
+  ```bash
+  DODO_PAYMENTS_WEBHOOK_SECRET=whsec_xxxxxxxx
+  ```
+
+---
+
+## Summary: env vars to add
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DODO_PAYMENTS_API_KEY` | Yes | API key from Developer → API Keys (write access). |
+| `DODO_PAYMENTS_PRODUCT_BUILDER` | Yes | Product ID for Builder plan (create in Products). |
+| `DODO_PAYMENTS_PRODUCT_PRO` | Yes | Product ID for Pro plan (create in Products). |
+| `DODO_PAYMENTS_ENVIRONMENT` | No | `test_mode` (default) or `live_mode`. |
+| `NEXT_PUBLIC_APP_URL` | Recommended (prod) | App origin, e.g. `https://yourdomain.com`. |
+| `DODO_PAYMENTS_WEBHOOK_SECRET` | No | Webhook signing secret for `/api/dodo/webhook`. |
+
+After setting these, the Pricing page will create Dodo checkouts and verify payments; with the webhook configured, plans are also activated when Dodo sends `payment.succeeded`.

@@ -3,11 +3,14 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { GlowingEffect } from "@/components/ui/glowing-effect"
-import { CircleArrowRight, ArrowRight, Code2, Wallet, Zap, Bot } from "lucide-react"
+import { CircleArrowRight, ArrowRight, Code2, Wallet, Zap, Bot, Github, Scale, ArrowLeftRight, Lock, MessageCircle, Cpu, CheckCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { PageTransition } from "@/components/page-transition"
+import { ProtocolsIntegratedSection } from "@/components/protocols-integrated"
+import { ScrambleText } from "@/components/scramble-text"
+import { FeatureCard } from "@/components/feature-card"
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -77,7 +80,7 @@ export default function Home() {
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-zinc-400 mb-12 md:mb-14 animate-fade-in-up animation-delay-200 font-semibold tracking-tight leading-tight"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            The developer suite for building on Stellar.
+            <ScrambleText text="The developer suite for building on Stellar." as="span" />
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 animate-fade-in-up animation-delay-400">
             <button
@@ -113,73 +116,115 @@ export default function Home() {
         </div>
       </div>
 
-      {/* What's in the DevKit — four pillars */}
+      {/* SDK Features — four pillars */}
       <section id="capabilities" className="relative z-20 py-20 scroll-mt-24">
-        <div className="container mx-auto px-6 lg:px-12">
-          <h2 className="text-3xl md:text-4xl font-light mb-4 text-balance">What’s in the DevKit</h2>
-          <p className="text-zinc-400 text-lg mb-12 max-w-2xl">
-            Four npm packages and this dashboard. Use the SDK in Node or the browser; add MCP to Cursor for AI-assisted Stellar development.
-          </p>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-20">
-            <Link
-              href="/docs#stellar-agent-kit"
-              className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-[#5100fd]/50 hover:bg-zinc-900/70 transition-all duration-300"
+        <div className="container mx-auto max-w-5xl px-6 lg:px-12">
+          <div className="mb-12 text-center">
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
-              <Code2 className="h-8 w-8 text-[#a78bfa] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">stellar-agent-kit</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Unified SDK: getBalances, sendPayment, createAccount, pathPayment, DEX quotes &amp; swaps (SoroSwap), lending (Blend), oracles (Reflector).
-              </p>
-              <span className="inline-flex items-center mt-4 text-sm text-[#a78bfa] group-hover:underline">
-                Docs <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
-            <Link
-              href="/docs#x402-stellar-sdk"
-              className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-[#5100fd]/50 hover:bg-zinc-900/70 transition-all duration-300"
-            >
-              <Wallet className="h-8 w-8 text-[#a78bfa] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">x402-stellar-sdk</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Monetize APIs with Stellar. HTTP 402 middleware (Express, Hono, Next.js) and client x402Fetch with payWithStellar.
-              </p>
-              <span className="inline-flex items-center mt-4 text-sm text-[#a78bfa] group-hover:underline">
-                Docs <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
-            <Link
-              href="/docs#create-stellar-devkit-app"
-              className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-[#5100fd]/50 hover:bg-zinc-900/70 transition-all duration-300"
-            >
-              <Zap className="h-8 w-8 text-[#a78bfa] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">create-stellar-devkit-app</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Scaffold in one command. Agent Kit (Next.js + StellarAgentKit) or x402 API (Express + paywall). Copy .env and run.
-              </p>
-              <span className="inline-flex items-center mt-4 text-sm text-[#a78bfa] group-hover:underline">
-                Docs <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
-            <Link
-              href="/devkit"
-              className="group relative rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-[#5100fd]/50 hover:bg-zinc-900/70 transition-all duration-300"
-            >
-              <Bot className="h-8 w-8 text-[#a78bfa] mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">stellar-devkit-mcp</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                MCP server for Cursor/Claude. Contract IDs, SDK snippets, live quotes. Attach to a chat and ask for code or addresses.
-              </p>
-              <span className="inline-flex items-center mt-4 text-sm text-[#a78bfa] group-hover:underline">
-                Open DevKit <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </span>
-            </Link>
+              <ScrambleText text="Everything your agents need to build on Stellar" as="span" />
+            </h2>
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-light mb-6">Capabilities</h2>
-          <p className="text-zinc-400 mb-8 max-w-xl">
-            Use the CLI agent (balance, pay, chat with tools) or build your own flow with the SDK. Swap and Send in the browser with Freighter—no secret key in the client.
-          </p>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <FeatureCard
+              icon={<Code2 className="h-5 w-5" strokeWidth={2} />}
+              label="Unified SDK"
+              title="Stellar Agent Kit"
+              description="Payments, DEX quotes & swaps (SoroSwap), lending (Blend), oracles (Reflector)."
+              href="/docs#stellar-agent-kit"
+            />
+            <FeatureCard
+              icon={<Wallet className="h-5 w-5" strokeWidth={2} />}
+              label="Monetization"
+              title="x402 Stellar SDK"
+              description="HTTP 402 middleware and x402Fetch. Monetize APIs with Stellar."
+              href="/docs#x402-stellar-sdk"
+            />
+            <FeatureCard
+              icon={<Zap className="h-5 w-5" strokeWidth={2} />}
+              label="Scaffolding"
+              title="Create DevKit App"
+              description="Scaffold Agent Kit or x402 API in one command. Copy .env and run."
+              href="/docs#create-stellar-devkit-app"
+            />
+            <FeatureCard
+              icon={<Bot className="h-5 w-5" strokeWidth={2} />}
+              label="MCP Server"
+              title="Stellar DevKit MCP"
+              description="Contract IDs, SDK snippets, live quotes. Cursor and Claude."
+              href="/devkit"
+            />
+          </div>
+
+          {/* Protocols Integrated — 5 protocols from the kit */}
+          <ProtocolsIntegratedSection />
+
+          {/* Try it yourself — code snippet + CTA */}
+          <section id="try-it" className="relative z-20 py-16 scroll-mt-24">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800 bg-zinc-900/80">
+                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
+                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
+                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
+                  <span className="text-zinc-500 text-xs font-medium ml-2">stellar-agent-kit</span>
+                </div>
+                <div className="p-4 font-mono text-sm overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <tbody>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">1</td><td className="text-zinc-400"><span className="text-[#c678dd]">import</span> {"{ StellarAgentKit, MAINNET_ASSETS }"} <span className="text-[#c678dd]">from</span> <span className="text-[#98c379]">&quot;stellar-agent-kit&quot;</span></td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">2</td><td className="text-zinc-400"></td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">3</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> agent <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">new</span> <span className="text-[#61afef]">StellarAgentKit</span>(process.<span className="text-[#d19a66]">env</span>.<span className="text-[#61afef]">SECRET_KEY</span>, <span className="text-[#98c379]">&quot;mainnet&quot;</span>)</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">4</td><td className="text-zinc-400"><span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">initialize</span>()</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">5</td><td className="text-zinc-400"></td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">6</td><td className="text-zinc-500"><span className="text-zinc-600">// Get a swap quote (1 XLM → USDC)</span></td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">7</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> quote <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">dexGetQuote</span>(</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">8</td><td className="text-zinc-400">  {"{ contractId: MAINNET_ASSETS.XLM.contractId }"},</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">9</td><td className="text-zinc-400">  {"{ contractId: MAINNET_ASSETS.USDC.contractId }"},</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">10</td><td className="text-zinc-400">  <span className="text-[#98c379]">&quot;10000000&quot;</span></td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">11</td><td className="text-zinc-400">)</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">12</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> result <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">dexSwap</span>(quote)</td></tr>
+                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">13</td><td className="text-zinc-400">console.<span className="text-[#61afef]">log</span>(result.hash)</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="flex flex-col items-start justify-center lg:pl-4">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase mb-6" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                  <ScrambleText text="TRY IT OUT FOR YOURSELF" as="span" />
+                </h2>
+                <p className="text-zinc-400 text-lg mb-8 max-w-md" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+                  Run the SDK in Node or the browser. Get a quote, build a swap, then sign with Freighter or the CLI.
+                </p>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full border-zinc-600 bg-zinc-900/80 text-white hover:bg-zinc-800 hover:border-zinc-500 hover:text-white px-8 py-6 text-base font-medium"
+                >
+                  <Link href="/docs#quick-start" className="inline-flex items-center gap-2">
+                    <Github className="h-5 w-5 shrink-0" />
+                    Take me to the code &gt;&gt;
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </section>
+
+          <div className="text-center mb-12">
+            <h2
+              className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase mb-4"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              <ScrambleText text="CAPABILITIES" as="span" />
+            </h2>
+            <p className="text-zinc-400 text-lg max-w-xl mx-auto" style={{ fontFamily: "var(--font-space-grotesk)" }}>
+              Use the CLI agent (balance, pay, chat with tools) or build your own flow with the SDK. Swap and Send in the browser with Freighter—no secret key in the client.
+            </p>
+          </div>
 
           <Tabs defaultValue="tools" className="w-full">
             <TabsList className="bg-zinc-950 border border-zinc-800 p-1 mb-8 rounded-full">
@@ -192,100 +237,76 @@ export default function Home() {
             </TabsList>
 
             <TabsContent value="tools" className="mt-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Check balance</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">Get native + trustline balances for any Stellar account via Horizon. Use <code className="rounded bg-zinc-800 px-1 text-xs">agent.getBalances()</code> or the CLI.</p>
-                    <Link href="/docs#stellar-agent-kit" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Docs</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Swap assets</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">DEX swaps via SoroSwap aggregator. Quote then execute with <code className="rounded bg-zinc-800 px-1 text-xs">dexGetQuote</code> + <code className="rounded bg-zinc-800 px-1 text-xs">dexSwap</code>, or try the in-browser Swap with Freighter.</p>
-                    <Link href="/swap" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Try Swap</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Payments &amp; path payments</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">Send XLM or custom assets; create accounts; path payments (strict receive). All via <code className="rounded bg-zinc-800 px-1 text-xs">StellarAgentKit</code> or the CLI <code className="rounded bg-zinc-800 px-1 text-xs">pay</code> command.</p>
-                    <Link href="/docs#stellar-agent-kit" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Docs</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Paywalled APIs (x402)</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">Protect routes with Stellar payment. Server returns 402 with payment details; client pays then retries with <code className="rounded bg-zinc-800 px-1 text-xs">x402Fetch</code> and <code className="rounded bg-zinc-800 px-1 text-xs">payWithStellar</code>.</p>
-                    <Link href="/docs#x402-stellar-sdk" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Docs</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <FeatureCard
+                  icon={<Scale className="h-5 w-5" strokeWidth={2} />}
+                  label="Balance"
+                  title="Check balance"
+                  description="Get native + trustline balances via Horizon. Use agent.getBalances() or the CLI."
+                  href="/docs#stellar-agent-kit"
+                  cta="Docs"
+                />
+                <FeatureCard
+                  icon={<ArrowLeftRight className="h-5 w-5" strokeWidth={2} />}
+                  label="DEX"
+                  title="Swap assets"
+                  description="DEX swaps via SoroSwap. dexGetQuote + dexSwap, or try the in-browser Swap with Freighter."
+                  href="/swap"
+                  cta="Try Swap"
+                />
+                <FeatureCard
+                  icon={<Wallet className="h-5 w-5" strokeWidth={2} />}
+                  label="Payments"
+                  title="Payments & path payments"
+                  description="Send XLM or custom assets; create accounts; path payments via StellarAgentKit or CLI pay."
+                  href="/docs#stellar-agent-kit"
+                  cta="Docs"
+                />
+                <FeatureCard
+                  icon={<Lock className="h-5 w-5" strokeWidth={2} />}
+                  label="x402"
+                  title="Paywalled APIs"
+                  description="Protect routes with Stellar payment. Server returns 402; client pays with x402Fetch and payWithStellar."
+                  href="/docs#x402-stellar-sdk"
+                  cta="Docs"
+                />
               </div>
             </TabsContent>
 
             <TabsContent value="flow" className="mt-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">You ask</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">In the Chat or CLI agent: &ldquo;Swap 0.2 XLM to USDC&rdquo;, &ldquo;Check my balance&rdquo;, or &ldquo;Get a quote for 10 XLM → USDC&rdquo;.</p>
-                    <Link href="/chat" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Open Chat</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Agent picks the tool</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">The LLM maps your request to a tool: check_balance, swap_asset, get_swap_quote, create_trustline—and fills parameters from context.</p>
-                    <Link href="/devkit" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">DevKit</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Tool runs on Stellar</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">Horizon, Soroban RPC, SoroSwap. Quote → build tx → you sign (e.g. Freighter or CLI) → submit. You get txHash or quote back.</p>
-                    <Link href="/docs#cli" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">CLI docs</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="relative rounded-2xl border border-zinc-800 p-3">
-                  <GlowingEffect blur={0} borderWidth={2} spread={80} glow proximity={64} inactiveZone={0.01} disabled={false} />
-                  <div className="relative bg-zinc-950 rounded-xl p-8">
-                    <h3 className="text-xl font-semibold text-white mb-3">Result in chat or your app</h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-6">Balances, swap confirmation, trustline created, or a human-readable quote. Same flow works in your own app using the SDK.</p>
-                    <Link href="/docs" className="inline-flex items-center text-[#a78bfa] hover:text-white transition-colors duration-300 group">
-                      <span className="underline">Full docs</span>
-                      <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
-                  </div>
-                </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <FeatureCard
+                  icon={<MessageCircle className="h-5 w-5" strokeWidth={2} />}
+                  label="Step 1"
+                  title="You ask"
+                  description={'In Chat or CLI: "Swap 0.2 XLM to USDC", "Check my balance", or "Get a quote for 10 XLM → USDC".'}
+                  href="/chat"
+                  cta="Open Chat"
+                />
+                <FeatureCard
+                  icon={<Cpu className="h-5 w-5" strokeWidth={2} />}
+                  label="Step 2"
+                  title="Agent picks the tool"
+                  description="The LLM maps your request to a tool: check_balance, swap_asset, get_swap_quote, create_trustline."
+                  href="/devkit"
+                  cta="DevKit"
+                />
+                <FeatureCard
+                  icon={<Zap className="h-5 w-5" strokeWidth={2} />}
+                  label="Step 3"
+                  title="Tool runs on Stellar"
+                  description="Horizon, Soroban RPC, SoroSwap. Quote → build tx → you sign (Freighter or CLI) → submit."
+                  href="/docs#cli"
+                  cta="CLI docs"
+                />
+                <FeatureCard
+                  icon={<CheckCircle className="h-5 w-5" strokeWidth={2} />}
+                  label="Step 4"
+                  title="Result in chat or your app"
+                  description="Balances, swap confirmation, trustline created, or a quote. Same flow in your own app."
+                  href="/docs"
+                  cta="Full docs"
+                />
               </div>
             </TabsContent>
           </Tabs>

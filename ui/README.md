@@ -1,4 +1,4 @@
-# Warly — Stellar DevKit UI (Option 1)
+# Orbit — Stellar DevKit UI (Option 1)
 
 Landing, Swap, DevKit, and Protocols. Uses the SDK via `lib/agent-kit` and Freighter for wallet/signing.
 
