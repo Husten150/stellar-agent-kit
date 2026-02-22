@@ -83,7 +83,17 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      checkConnection().then(setAccount).catch(() => setAccount(null))
+      checkConnection()
+        .then((next) => {
+          setAccount((prev) => {
+            // Don’t restore account from poll when user has disconnected (prev === null)
+            if (prev === null) return null
+            return next
+          })
+        })
+        .catch(() => {
+          setAccount((prev) => (prev !== null ? null : prev))
+        })
     }, 30000)
     return () => clearInterval(interval)
   }, [])
@@ -114,6 +124,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const disconnect = useCallback(() => {
+    setIsLoading(false)
     setAccount(null)
   }, [])
 

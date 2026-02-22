@@ -6,6 +6,7 @@ import { LiquidMetalButton } from "@/components/ui/liquid-metal-button"
 import { useAccount } from "@/hooks/use-account"
 import { Wallet } from "lucide-react"
 import { toast } from "sonner"
+import { isConnected } from "@stellar/freighter-api"
 
 interface ConnectButtonProps {
   label?: string
@@ -27,11 +28,34 @@ export function ConnectButton({
   const [isConnecting, setIsConnecting] = useState(false)
   const [isFreighterAvailable, setIsFreighterAvailable] = useState(false)
 
-  // Check if Freighter is available
+  // Debug what's disabling the button
+  console.log("ConnectButton state:", { isLoading, isConnecting, isFreighterAvailable, disabled: isLoading || isConnecting || !isFreighterAvailable })
+
+  // Check if Freighter is available using the same method as AccountProvider
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsFreighterAvailable(!!window.freighter)
+    const checkFreighter = async () => {
+      try {
+        // This will throw if Freighter is not available
+        await isConnected()
+        console.log("Freighter available via isConnected()")
+        setIsFreighterAvailable(true)
+      } catch (error) {
+        console.log("Freighter not available:", error)
+        setIsFreighterAvailable(false)
+        
+        // Fallback: also check window.freighter
+        if (typeof window !== "undefined" && window.freighter) {
+          console.log("Freighter found via window.freighter, setting available")
+          setIsFreighterAvailable(true)
+        }
+      }
     }
+    
+    checkFreighter()
+    
+    // Also check after a delay in case Freighter loads late
+    const delayedCheck = setTimeout(checkFreighter, 2000)
+    return () => clearTimeout(delayedCheck)
   }, [])
 
   const handleConnect = async () => {
