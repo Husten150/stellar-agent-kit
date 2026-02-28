@@ -80,9 +80,12 @@ export default function PricingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ planId }),
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setError(data.error || "Failed to create checkout")
+        const msg = data.details
+          ? `${data.error || "Checkout failed"}: ${typeof data.details === "string" ? data.details : JSON.stringify(data.details)}`
+          : (data.error || "Failed to create checkout")
+        setError(msg)
         return
       }
       if (data.checkoutUrl) {

@@ -61,9 +61,16 @@ export async function POST(req: Request) {
   })
 
   if (!res.ok) {
-    const err = await res.text()
+    const errText = await res.text()
+    let details: string
+    try {
+      const parsed = JSON.parse(errText) as { message?: string; error?: string }
+      details = parsed.message || parsed.error || errText
+    } catch {
+      details = errText || `HTTP ${res.status}`
+    }
     return NextResponse.json(
-      { error: "Dodo Payments checkout creation failed", details: err },
+      { error: "Dodo Payments checkout creation failed", details },
       { status: 502 }
     )
   }

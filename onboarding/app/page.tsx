@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {
   Zap,
   Shield,
@@ -80,6 +81,16 @@ const NAV_LINKS = [
   { href: "#paths", label: "Businesses" },
   { href: "#numbers", label: "By the Numbers" },
   { href: "#join", label: "Community" },
+]
+
+const ADOPTION_LOGOS = [
+  { name: "Stellar", src: "/brand/logos/stellar.png", width: 140, height: 40 },
+  { name: "Circle", src: "/brand/logos/circle.png", width: 140, height: 40 },
+  { name: "IBM", src: "/brand/logos/ibm.png", width: 140, height: 40 },
+  { name: "Franklin Templeton", src: "/brand/logos/franklin.png", width: 160, height: 40 },
+  { name: "MoneyGram", src: "/brand/logos/moneygram.png", width: 160, height: 40 },
+  { name: "Visa", src: "/brand/logos/visa.png", width: 140, height: 40 },
+  { name: "BlackRock", src: "/brand/logos/blackrock.png", width: 160, height: 40 },
 ]
 
 export default function OnboardingPage() {
@@ -227,17 +238,21 @@ export default function OnboardingPage() {
             <p className="mx-auto mt-2 max-w-xl text-center text-zinc-400">
               Some of the many enterprises and institutions building on Stellar
             </p>
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-zinc-500">
-              {["Stellar Development Foundation", "Circle", "MoneyGram", "Visa", "IBM"].map(
-                (name) => (
-                  <div
-                    key={name}
-                    className="rounded-lg border border-zinc-800 bg-zinc-900/50 px-6 py-3 text-sm font-medium"
-                  >
-                    {name}
-                  </div>
-                )
-              )}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-8">
+              {ADOPTION_LOGOS.map((logo) => (
+                <div
+                  key={logo.name}
+                  className="flex items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/40 px-6 py-4"
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.name}
+                    width={logo.width}
+                    height={logo.height}
+                    className="h-8 w-auto object-contain md:h-10"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>

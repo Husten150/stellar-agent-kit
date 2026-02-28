@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useAccount } from "./use-account"
 import { useNetworkProfile } from "@/contexts/network-profile-context"
-import { sdkApiHeaders } from "@/lib/get-devkit-app-id"
+import { demoApiHeaders } from "@/lib/get-devkit-app-id"
 
 interface BalanceEntry {
   code: string
@@ -30,7 +30,7 @@ export function useBalance() {
 
       const response = await fetch('/api/balance', {
         method: 'POST',
-        headers: sdkApiHeaders(),
+        headers: demoApiHeaders(),
         body: JSON.stringify({
           publicKey: account.publicKey,
           network: profileNetwork

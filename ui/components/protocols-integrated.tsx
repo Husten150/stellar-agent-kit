@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { LiquidMetalButton } from "@/components/ui/liquid-metal-button"
 import { ScrambleText } from "@/components/scramble-text"
 
 // 5 protocols integrated in the kit — logos from brand/logos (copied to public/brand/logos)
@@ -80,16 +80,11 @@ export function ProtocolsIntegratedSection() {
         ))}
       </div>
       <div className="mt-10 text-center">
-        <Button
-          variant="outline"
-          size="lg"
-          asChild
-          className="rounded-full border-zinc-600 bg-zinc-900/90 text-white hover:bg-zinc-800 hover:border-zinc-500 hover:text-white"
-        >
-          <Link href="/protocols">
-            View all protocols — Try it, get code, or open docs
-          </Link>
-        </Button>
+        <LiquidMetalButton
+          href="/protocols"
+          label="View all protocols"
+          width={220}
+        />
       </div>
     </section>
   )

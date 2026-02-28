@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { sdkApiHeaders } from "@/lib/get-devkit-app-id"
+import { demoApiHeaders } from "@/lib/get-devkit-app-id"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -33,7 +33,7 @@ interface PriceData {
 /** Fetch real price from Reflector oracle API */
 async function fetchAssetPrice(symbol: string): Promise<{ price: string } | null> {
   try {
-    const res = await fetch(`/api/price?symbol=${encodeURIComponent(symbol)}`, { headers: sdkApiHeaders() })
+    const res = await fetch(`/api/price?symbol=${encodeURIComponent(symbol)}`, { headers: demoApiHeaders() })
     if (!res.ok) return null
     const data = await res.json()
     if (data.price == null && data.lastprice != null) {

@@ -14,7 +14,7 @@ import { useBalance } from "@/hooks/use-balance"
 import { useNetworkProfile } from "@/contexts/network-profile-context"
 import { NetworkMismatchDialog } from "./network-mismatch-dialog"
 import { isNetworkMismatch } from "@/lib/network-validation"
-import { sdkApiHeaders } from "@/lib/get-devkit-app-id"
+import { demoApiHeaders } from "@/lib/get-devkit-app-id"
 import { MAINNET_ASSETS } from "stellar-agent-kit"
 import { normalizeNetwork } from "@/lib/network"
 import { toast } from "sonner"
@@ -130,7 +130,7 @@ export function BlendInterface() {
       // Build supply transaction
       const response = await fetch("/api/lending/supply", {
         method: "POST",
-        headers: sdkApiHeaders(),
+        headers: demoApiHeaders(),
         body: JSON.stringify({
           publicKey,
           asset: supplyState.asset.contractId,
@@ -155,7 +155,7 @@ export function BlendInterface() {
       const network = account ? normalizeNetwork(account.network) : "mainnet"
       const submitResponse = await fetch("/api/lending/submit", {
         method: "POST",
-        headers: sdkApiHeaders(),
+        headers: demoApiHeaders(),
         body: JSON.stringify({ 
           signedXdr,
           network 
@@ -229,7 +229,7 @@ export function BlendInterface() {
       // Build borrow transaction
       const response = await fetch("/api/lending/borrow", {
         method: "POST",
-        headers: sdkApiHeaders(),
+        headers: demoApiHeaders(),
         body: JSON.stringify({
           publicKey,
           asset: borrowState.asset.contractId,
@@ -254,7 +254,7 @@ export function BlendInterface() {
       const network = account ? normalizeNetwork(account.network) : "mainnet"
       const submitResponse = await fetch("/api/lending/submit", {
         method: "POST",
-        headers: sdkApiHeaders(),
+        headers: demoApiHeaders(),
         body: JSON.stringify({ 
           signedXdr,
           network 

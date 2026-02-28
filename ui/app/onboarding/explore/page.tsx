@@ -24,7 +24,7 @@ export default function OnboardingExplorePage() {
             <div className="absolute inset-0 left-1/2 -translate-x-1/2 w-screen" aria-hidden>
               <DotPattern fixed={false} baseColor="#52525b" glowColor="#71717a" gap={22} dotSize={2.5} proximity={140} waveSpeed={0.4} baseOpacityMin={0.28} baseOpacityMax={0.48} />
             </div>
-            <div className="relative z-10 mx-auto max-w-3xl px-4 py-16 text-center sm:py-20">
+            <div className="relative z-10 mx-auto max-w-3xl px-4 pt-24 pb-16 text-center sm:pt-28 sm:pb-20">
               <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl" style={{ fontFamily: "var(--font-space-grotesk)" }}>
                 Explore the Stellar ecosystem
               </h1>

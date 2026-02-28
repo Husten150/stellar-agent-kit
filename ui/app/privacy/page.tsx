@@ -7,7 +7,7 @@ export default function PrivacyPage() {
     <main className="relative min-h-screen bg-black text-white">
       <Navbar />
       <PageTransition>
-        <div className="mx-auto max-w-2xl px-6 py-24">
+        <div className="mx-auto max-w-2xl px-6 pt-32 pb-24">
           <h1 className="text-3xl font-bold tracking-tight text-white">Privacy Policy</h1>
           <p className="mt-4 text-zinc-400">
             This page is a placeholder. Add your privacy policy content here.

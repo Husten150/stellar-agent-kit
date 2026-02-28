@@ -23,18 +23,14 @@ const TESTER_APP_ID = "9009096129344dba93bdd7d1bdd55dc8"
 
 /**
  * Validates appId and plan. Returns { appId, plan } if the appId is registered
- * and has an active paid plan (builder or pro). Otherwise returns a 403 NextResponse.
- * Use at the start of SDK API routes (swap, lending, price, send, balance).
+ * and has an active paid plan (builder or pro). When no appId is sent (e.g. website
+ * Try Swap / Send / Balance / Prices), allows the request so the in-site demo works;
+ * gating applies only when developers call the API with x-app-id from their SDK.
  */
 export function requireActivePlan(request: Request): { appId: string; plan: PlanId } | NextResponse {
   const appId = getAppIdFromRequest(request)
   if (!appId) {
-    return NextResponse.json(
-      {
-        error: "Missing API key. Send your DevKit App ID in the x-app-id header or Authorization: Bearer <appId>. Create a project in DevKit and link a plan in Pricing.",
-      },
-      { status: 403 }
-    )
+    return { appId: "", plan: "free" }
   }
 
   // Give complete access to tester app ID

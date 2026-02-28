@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button"
 import { LiquidMetalButton } from "@/components/ui/liquid-metal-button"
 import { Input } from "@/components/ui/input"
 import { PageTransition } from "@/components/page-transition"
+import { CodeWindow } from "@/components/code-window"
 
 const PROJECT_STORAGE_KEY = "stellar-devkit-project"
 
@@ -191,7 +192,7 @@ export default function DevKitPage() {
     <main className="relative min-h-screen bg-black text-white overflow-hidden">
       <Navbar />
       <PageTransition>
-        <section className="relative z-20 py-16 md:py-24">
+        <section className="relative z-20 pt-28 md:pt-32 pb-16 md:pb-24">
           <div className="mx-auto w-full max-w-5xl px-6 sm:px-8 lg:px-12">
             <header className="mb-8">
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
@@ -420,8 +421,8 @@ export default function DevKitPage() {
 
                 <div>
                   <h3 className="text-lg font-medium text-white mb-2">Install &amp; configure in Cursor</h3>
-                  <pre className="rounded-xl border border-zinc-800 bg-zinc-950 p-4 text-sm text-zinc-400 font-mono overflow-x-auto">
-{`# Install the MCP server (already in your project if you use the monorepo)
+                  <CodeWindow
+                    code={`# Install the MCP server (already in your project if you use the monorepo)
 npm install stellar-devkit-mcp
 
 # Add to Cursor MCP settings (e.g. .cursor/mcp.json or Cursor Settings > MCP):
@@ -433,7 +434,9 @@ npm install stellar-devkit-mcp
     }
   }
 }`}
-                  </pre>
+                    title="stellar-devkit-mcp.mcp.json"
+                    startLine={1}
+                  />
                 </div>
 
                 <div>

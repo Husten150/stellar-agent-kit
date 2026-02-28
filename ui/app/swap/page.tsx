@@ -40,7 +40,7 @@ export default function SwapPage() {
 
       {/* Swap Content */}
       <PageTransition>
-      <div className="relative z-20 container mx-auto px-6 lg:px-12 pt-24 pb-32 min-h-screen flex flex-col justify-center overflow-x-hidden">
+      <div className="relative z-20 container mx-auto px-6 lg:px-12 pt-28 md:pt-32 pb-32 min-h-screen flex flex-col justify-center overflow-x-hidden">
         <div className="max-w-md mx-auto w-full min-w-0">
           {/* Header */}
           <div className="text-center mb-12 animate-fade-in">

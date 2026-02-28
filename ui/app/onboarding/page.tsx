@@ -1,25 +1,38 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { type ReactNode } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { motion } from "motion/react"
 import {
-  Wallet,
-  Globe,
-  ArrowRight,
-  Code2,
-  Building2,
   ExternalLink,
-  TrendingUp,
-  LayoutGrid,
-  Zap,
-  Coins,
-  Activity,
 } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { DotPattern } from "@/components/dot-pattern"
 import { PageTransition } from "@/components/page-transition"
+import { NumberTicker } from "@/components/ui/number-ticker"
+
+const viewport = { once: true, amount: 0.12 }
+const transition = { duration: 0.55, ease: "easeOut" as const }
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+}
+
+function FadeInSection({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewport}
+      transition={transition}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}
 const NUMBERS_HEADLINE = "Let's build something great."
 const NUMBERS_DESCRIPTION =
   "Stellar powers fast, low-cost payments and DeFi at scale. Join thousands of projects and developers building on a network designed for the real world."
@@ -28,7 +41,7 @@ const ORBIT_DISCORD_URL = "https://discord.gg/stellardev"
 const ORBIT_X_URL = "https://x.com/StellarOrg"
 const ORBIT_WEBSITE_URL = "https://orbitkit.fun"
 
-// Standalone logo links with shiny/glass effect (no button look)
+// Logo links without box — icon only, subtle hover
 function JoinOrbitLogoLink({
   href,
   ariaLabel,
@@ -41,7 +54,7 @@ function JoinOrbitLogoLink({
   external?: boolean
 }) {
   const className =
-    "flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all duration-300 hover:border-white/20 hover:bg-white/10 sm:h-16 sm:w-16"
+    "flex h-12 w-12 shrink-0 items-center justify-center text-white transition-opacity duration-300 hover:opacity-80 sm:h-14 sm:w-14"
   const content = <>{children}</>
   if (external) {
     return (
@@ -62,96 +75,44 @@ const PATHS = [
     id: "beginners",
     title: "New to Crypto",
     subtitle: "New to crypto (and Stellar)?",
-    description:
-      "Complete beginner's guide to crypto on Stellar — learn to set up your wallet, get XLM, and explore your first DeFi apps.",
-    bullets: ["Set up wallet", "Get XLM tokens", "Explore Decentralized Finance"],
-    cta: "Get Started",
     href: "/onboarding/beginners",
-    icon: Wallet,
     percentage: 10,
   },
   {
     id: "explore",
     title: "Seasoned Web3 Users",
     subtitle: "Explore the Stellar Ecosystem",
-    description:
-      "Already familiar with crypto? Explore what makes Stellar unique and bridge your assets today.",
-    bullets: ["Bridge assets", "Trade tokens", "Explore DeFi"],
-    cta: "Explore Now",
     href: "/onboarding/explore",
-    icon: Globe,
     percentage: 25,
   },
   {
     id: "developers",
     title: "Developers",
     subtitle: "Ready to Build?",
-    description:
-      "Access comprehensive documentation, DevKit tools, and community support for building on Stellar.",
-    bullets: ["Technical docs", "Development tools", "Community support"],
-    cta: "Start Building",
     href: "/onboarding/developers",
-    icon: Code2,
     percentage: 50,
   },
   {
     id: "enterprise",
     title: "Businesses",
     subtitle: "Enterprise Solution?",
-    description:
-      "Discover how leading enterprises leverage Stellar for scalable blockchain solutions.",
-    bullets: ["Enterprise partnerships", "Scalable solutions", "Professional support"],
-    cta: "Learn More",
     href: "/onboarding/enterprise",
-    icon: Building2,
     percentage: 75,
   },
 ]
 
-// Stats with icons for the two-column layout (headline left, 2x2 grid right)
-const STATS = [
-  { value: "500+", label: "Projects", icon: LayoutGrid },
-  { value: "< 5s", label: "Finality", icon: Zap },
-  { value: "< $0.01", label: "Fees", icon: Coins },
-  { value: "1,000+", label: "TPS", icon: Activity },
+const STATS: Array<{
+  label: string
+  value: number
+  prefix?: string
+  suffix?: string
+  decimalPlaces?: number
+}> = [
+  { label: "Projects", value: 500, suffix: "+" },
+  { label: "Finality", value: 5, prefix: "< ", suffix: "s" },
+  { label: "Fees", value: 0.01, prefix: "< $", decimalPlaces: 2 },
+  { label: "TPS", value: 1000, suffix: "+" },
 ]
-
-// Worldwide Adoption — company name + logo (Clearbit). Fallback to name if image fails.
-const ADOPTION_PARTNERS: { name: string; domain: string }[] = [
-  { name: "Stellar Development Foundation", domain: "stellar.org" },
-  { name: "Circle", domain: "circle.com" },
-  { name: "MoneyGram", domain: "moneygram.com" },
-  { name: "Visa", domain: "visa.com" },
-  { name: "IBM", domain: "ibm.com" },
-  { name: "BlackRock", domain: "blackrock.com" },
-  { name: "Franklin Templeton", domain: "franklintempleton.com" },
-]
-const CLEARBIT_LOGO = (domain: string) => `https://logo.clearbit.com/${domain}`
-
-function AdoptionPartnerLogo({ name, domain }: { name: string; domain: string }) {
-  const [failed, setFailed] = useState(false)
-  const logoUrl = CLEARBIT_LOGO(domain)
-  if (failed) {
-    return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 px-5 py-3 text-sm font-medium text-zinc-400 transition-colors hover:border-zinc-600 hover:text-zinc-200">
-        {name}
-      </div>
-    )
-  }
-  return (
-    <div className="flex h-20 w-36 min-w-36 items-center justify-center rounded-xl border border-zinc-800 bg-white/5 px-6 py-5 transition-colors hover:border-zinc-600 hover:bg-white/10 sm:h-24 sm:w-44 sm:min-w-44 sm:px-8 sm:py-6">
-      <Image
-        src={logoUrl}
-        alt={name}
-        width={160}
-        height={64}
-        className="h-12 w-auto max-w-[140px] object-contain object-center grayscale opacity-90 hover:opacity-100 sm:h-14 sm:max-w-[160px]"
-        onError={() => setFailed(true)}
-        unoptimized
-      />
-    </div>
-  )
-}
 
 export default function OnboardingPage() {
   return (
@@ -174,15 +135,17 @@ export default function OnboardingPage() {
                 baseOpacityMax={0.48}
               />
             </div>
-            <div className="relative z-10 mx-auto max-w-3xl px-4 py-20 text-center sm:py-28">
-              <Image
-                src="/stellar-logo.png"
-                alt="Stellar"
-                width={380}
-                height={98}
-                className="mx-auto h-20 w-auto sm:h-24 md:h-28 lg:h-32 xl:h-36 object-contain"
-                priority
-              />
+            <FadeInSection className="relative z-10 mx-auto max-w-3xl px-4 pt-28 pb-20 text-center sm:pt-32 sm:pb-28">
+              <div className="mx-auto w-fit mix-blend-screen">
+                <Image
+                  src="/stellar-logo.png"
+                  alt="Stellar"
+                  width={380}
+                  height={98}
+                  className="h-20 w-auto sm:h-24 md:h-28 lg:h-32 xl:h-36 object-contain"
+                  priority
+                />
+              </div>
               <h1
                 className="mt-8 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
                 style={{ fontFamily: "var(--font-space-grotesk)" }}
@@ -192,13 +155,13 @@ export default function OnboardingPage() {
               <p className="mt-4 text-lg text-zinc-400 sm:text-xl" style={{ fontFamily: "var(--font-space-grotesk)" }}>
                 The fast, scalable network for payments and DeFi. Choose your path to join the future of decentralized applications.
               </p>
-            </div>
+            </FadeInSection>
           </section>
 
           {/* Choose Your Path */}
           <section id="paths" className="relative scroll-mt-24 border-b border-zinc-800/50 px-4 py-20 sm:py-28">
             <div className="absolute inset-0 left-1/2 -translate-x-1/2 w-screen bg-black/40" aria-hidden />
-            <div className="relative z-10 mx-auto max-w-6xl">
+            <FadeInSection className="relative z-10 mx-auto max-w-6xl">
               <div className="space-y-3 text-center">
                 <h2
                   className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
@@ -210,145 +173,97 @@ export default function OnboardingPage() {
                   Find the right resources for your Stellar journey
                 </p>
               </div>
-              <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <motion.div
+                className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch"
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewport}
+                variants={{
+                  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+                  hidden: {},
+                }}
+              >
                 {PATHS.map((path) => {
-                  const Icon = path.icon
                   const percentage = path.percentage ?? 10
-                  const desc = path.description
-                  const dashIdx = desc.indexOf("—")
-                  const boldLead = dashIdx > 0 ? desc.slice(0, dashIdx).trim() : desc.slice(0, 50).trim()
-                  const restDesc = dashIdx > 0 ? desc.slice(dashIdx + 1).trim() : desc.slice(boldLead.length).trim()
                   return (
-                    <Link
-                      key={path.id}
-                      href={path.href}
-                      className="group relative flex flex-col overflow-hidden rounded-3xl border border-zinc-800/80 bg-black text-left transition-all duration-300 hover:border-zinc-600 hover:shadow-xl hover:shadow-black/20"
-                    >
-                      {/* Glass / shiny effect: dark gradient + soft highlight top-left */}
-                      <div
-                        className="absolute inset-0 rounded-3xl"
-                        style={{
-                          background:
-                            "linear-gradient(165deg, rgba(255,255,255,0.07) 0%, transparent 35%, transparent 70%, rgba(0,0,0,0.4) 100%), linear-gradient(180deg, #0a0a0a 0%, #050505 100%)",
-                          boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.04)",
-                        }}
-                        aria-hidden
-                      />
-                      <div className="relative z-10 flex flex-1 flex-col p-6">
-                        {/* Top tag */}
-                        <div className="mb-4 flex items-center gap-2">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/5">
-                            <Icon className="h-4 w-4 text-zinc-400 group-hover:text-white transition-colors" />
-                          </span>
-                          <span className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+                    <motion.div key={path.id} variants={cardVariants} className="flex min-h-[160px]">
+                      <Link
+                        href={path.href}
+                        className="group relative flex w-full flex-col overflow-hidden rounded-3xl border border-zinc-800/80 bg-black text-left transition-all duration-300 hover:border-zinc-600 hover:shadow-xl hover:shadow-black/20"
+                      >
+                        <div
+                          className="absolute inset-0 rounded-3xl"
+                          style={{
+                            background:
+                              "linear-gradient(165deg, rgba(255,255,255,0.07) 0%, transparent 35%, transparent 70%, rgba(0,0,0,0.4) 100%), linear-gradient(180deg, #0a0a0a 0%, #050505 100%)",
+                            boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.04)",
+                          }}
+                          aria-hidden
+                        />
+                        <div className="relative z-10 flex flex-1 flex-col justify-center p-6">
+                          <h3 className="text-lg font-semibold uppercase tracking-wider text-white sm:text-xl">
                             {path.subtitle}
-                          </span>
-                        </div>
-                        {/* Large percentage + arrow */}
-                        <div className="mb-4 flex items-baseline gap-2">
-                          <span className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+                          </h3>
+                          <p className="mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
                             {percentage}%
-                          </span>
-                          <TrendingUp className="h-5 w-5 text-zinc-500 group-hover:text-zinc-300 transition-colors" aria-hidden />
+                          </p>
                         </div>
-                        {/* Description: bold lead + rest */}
-                        <p className="flex-1 text-sm leading-relaxed text-zinc-400">
-                          <span className="font-semibold text-white">{boldLead}</span>
-                          {restDesc && (
-                            <>
-                              {" "}
-                              {restDesc}
-                            </>
-                          )}
-                        </p>
-                        {/* CTA */}
-                        <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-white group-hover:underline">
-                          {path.cta}
-                          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                        </span>
-                      </div>
-                    </Link>
+                      </Link>
+                    </motion.div>
                   )
                 })}
-              </div>
-            </div>
+              </motion.div>
+            </FadeInSection>
           </section>
 
-          {/* Stellar by the Numbers — two columns: big headline + paragraph left, 2x2 stats right */}
+          {/* Stellar by the Numbers — two columns: big headline + paragraph left, 2x2 stats right (no box) */}
           <section id="numbers" className="relative scroll-mt-24 border-b border-zinc-800/50 px-4 py-20 sm:py-28">
-            <div className="mx-auto max-w-6xl">
-              <div className="rounded-3xl border border-zinc-800/80 bg-zinc-900/30 p-8 sm:p-10 lg:p-12">
-                <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
-                  {/* Left: big headline (home page font) + paragraph */}
-              <div className="space-y-4">
-                <h2
-                  className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
-                  style={{ fontFamily: "var(--font-space-grotesk)" }}
-                >
-                  {NUMBERS_HEADLINE}
-                </h2>
-                    <p
-                      className="max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg"
-                      style={{ fontFamily: "var(--font-space-grotesk)" }}
-                    >
-                      {NUMBERS_DESCRIPTION}
-                    </p>
-                  </div>
-                  {/* Right: 2x2 stats — icon, value, label */}
-                  <div className="grid grid-cols-2 gap-8 sm:gap-10">
-                    {STATS.map((stat) => {
-                      const Icon = stat.icon
-                      return (
-                        <div key={stat.label} className="flex flex-col gap-2">
-                          <span className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-500">
-                            <Icon className="h-5 w-5" aria-hidden />
-                          </span>
-                          <div
-                            className="text-2xl font-bold tracking-tight text-white sm:text-3xl"
-                            style={{ fontFamily: "var(--font-space-grotesk)" }}
-                          >
-                            {stat.value}
-                          </div>
-                          <div className="text-sm font-medium text-zinc-400">{stat.label}</div>
-                        </div>
-                      )
-                    })}
-                  </div>
+            <FadeInSection className="mx-auto max-w-6xl">
+              <div className="grid gap-10 lg:grid-cols-2 lg:gap-16 lg:items-center">
+                {/* Left: big headline + paragraph */}
+                <div className="space-y-5">
+                  <h2
+                    className="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {NUMBERS_HEADLINE}
+                  </h2>
+                  <p
+                    className="max-w-lg text-lg leading-relaxed text-zinc-400 sm:text-xl"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {NUMBERS_DESCRIPTION}
+                  </p>
+                </div>
+                {/* Right: 2x2 stats — icon, value, label */}
+                <div className="grid grid-cols-2 gap-10 sm:gap-14">
+                  {STATS.map((stat, idx) => (
+                    <div key={stat.label} className="flex flex-col gap-4">
+                      <div
+                        className="text-5xl font-semibold tracking-tight text-white sm:text-6xl"
+                        style={{ fontFamily: "var(--font-space-grotesk)" }}
+                      >
+                        {stat.prefix ?? ""}
+                        <NumberTicker
+                          value={stat.value}
+                          decimalPlaces={stat.decimalPlaces ?? 0}
+                          delay={0.08 * idx}
+                          className="text-5xl font-semibold tracking-tight text-white sm:text-6xl"
+                        />
+                        {stat.suffix ?? ""}
+                      </div>
+                      <div className="text-lg font-medium text-zinc-400 sm:text-xl">{stat.label}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* Worldwide Adoption */}
-          <section className="border-b border-zinc-800/50 px-4 py-20 sm:py-28">
-            <div className="mx-auto max-w-6xl">
-              <div className="space-y-3 text-center">
-                <h2
-                  className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
-                  style={{ fontFamily: "var(--font-space-grotesk)" }}
-                >
-                  Worldwide Adoption
-                </h2>
-                <p className="mx-auto max-w-xl text-zinc-400">
-                  Some of the many global enterprises and financial institutions using Stellar
-                </p>
-              </div>
-              <div className="mt-14 flex flex-wrap items-center justify-center gap-6 sm:gap-8">
-                {ADOPTION_PARTNERS.map((partner) => (
-                  <AdoptionPartnerLogo
-                    key={partner.domain}
-                    name={partner.name}
-                    domain={partner.domain}
-                  />
-                ))}
-              </div>
-            </div>
+            </FadeInSection>
           </section>
 
           {/* Join Orbit */}
           <section id="join" className="relative scroll-mt-24 px-4 py-20 sm:py-28">
             <div className="absolute inset-0 left-1/2 -translate-x-1/2 w-screen bg-zinc-950/50" aria-hidden />
-            <div className="relative z-10 mx-auto max-w-2xl text-center">
+            <FadeInSection className="relative z-10 mx-auto max-w-2xl text-center">
               <div className="space-y-4">
                 <h2
                   className="text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl"
@@ -393,7 +308,7 @@ export default function OnboardingPage() {
                   </Link>
                 </div>
               </footer>
-            </div>
+            </FadeInSection>
           </section>
         </main>
       </PageTransition>

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/collapsible"
 import { Button } from "@/components/ui/button"
 import { BentoGrid } from "@/components/ui/bento-grid"
+import { CodeWindow } from "@/components/code-window"
 
 // Contract IDs from stellar-agent-kit + protocol docs (mainnet)
 const SOROSWAP_AGGREGATOR = "CAG5LRYQ5JVEUI5TEID72EYOVX44TTUJT5BQR2J6J77FH65PCCFAJDDH"
@@ -386,14 +387,16 @@ function CodeGeneratorTab() {
         ))}
       </div>
       {block && (
-        <div className="rounded-xl border border-zinc-800 bg-zinc-950 overflow-hidden">
-          <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-zinc-800">
-            <span className="text-sm text-zinc-500 font-mono">{block.filename}</span>
-            <div className="flex items-center gap-2">
+        <CodeWindow
+          code={block.code}
+          title={block.filename}
+          startLine={1}
+          headerRight={
+            <>
               {tryItHref && (
                 <Link
                   href={tryItHref}
-                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-700 px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                  className="inline-flex items-center gap-1 rounded-lg border border-zinc-700 px-3 py-1.5 text-[11px] text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
                 >
                   Try it <ExternalLink className="h-3.5 w-3.5" />
                 </Link>
@@ -401,17 +404,15 @@ function CodeGeneratorTab() {
               <button
                 type="button"
                 onClick={handleCopy}
-                className="flex items-center gap-2 rounded-lg border border-zinc-700 px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="flex items-center gap-1.5 rounded-lg border border-zinc-700 px-3 py-1.5 text-[11px] text-zinc-300 hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 {copied ? "Copied" : "Copy"}
               </button>
-            </div>
-          </div>
-          <pre className="p-4 text-xs text-zinc-400 overflow-x-auto max-h-80 overflow-y-auto font-mono leading-relaxed whitespace-pre">
-            <code>{block.code}</code>
-          </pre>
-        </div>
+            </>
+          }
+          className="max-h-80"
+        />
       )}
     </div>
   )
@@ -440,7 +441,7 @@ export default function ProtocolsPage() {
     <main className="relative min-h-screen bg-black text-white overflow-hidden">
       <Navbar />
       <PageTransition>
-        <section className="relative z-20 py-16 md:py-24">
+        <section className="relative z-20 pt-28 md:pt-32 pb-16 md:pb-24">
           <div className="mx-auto w-full max-w-5xl px-6 sm:px-8 lg:px-12">
             <header className="mb-10">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">

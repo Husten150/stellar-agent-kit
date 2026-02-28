@@ -11,7 +11,7 @@ import { useAccount } from "@/hooks/use-account"
 import { useNetworkProfile } from "@/contexts/network-profile-context"
 import { NetworkMismatchDialog } from "./network-mismatch-dialog"
 import { isNetworkMismatch } from "@/lib/network-validation"
-import { sdkApiHeaders } from "@/lib/get-devkit-app-id"
+import { demoApiHeaders } from "@/lib/get-devkit-app-id"
 import { ConnectButton } from "./connect-button"
 import { toast } from "sonner"
 import {
@@ -45,7 +45,7 @@ export function SendInterface() {
   const buildPayment = async (): Promise<{ xdr: string }> => {
     const res = await fetch("/api/send/build", {
       method: "POST",
-      headers: sdkApiHeaders(),
+      headers: demoApiHeaders(),
       body: JSON.stringify({
         fromAddress: account!.publicKey,
         to: toAddress.trim(),
@@ -65,7 +65,7 @@ export function SendInterface() {
   const submitPayment = async (signedXdr: string): Promise<{ hash: string }> => {
     const res = await fetch("/api/send/submit", {
       method: "POST",
-      headers: sdkApiHeaders(),
+      headers: demoApiHeaders(),
       body: JSON.stringify({ signedXdr, network: profileNetwork }),
     })
     if (!res.ok) {

@@ -24,3 +24,12 @@ export function sdkApiHeaders(): Record<string, string> {
   if (appId) headers["x-app-id"] = appId
   return headers
 }
+
+/**
+ * Headers for in-site demo (Try Swap, Send, Balance, Prices, Lending). Do not send x-app-id
+ * so the API allows the request without plan gating. Gating applies when developers use the
+ * SDK with x-app-id from their own apps.
+ */
+export function demoApiHeaders(): Record<string, string> {
+  return { "Content-Type": "application/json" }
+}

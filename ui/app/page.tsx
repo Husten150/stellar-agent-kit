@@ -14,6 +14,21 @@ import { ScrambleText } from "@/components/scramble-text"
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid"
 import { DotPattern } from "@/components/dot-pattern"
 import { DevKitAnimatedBeam } from "@/components/devkit-animated-beam"
+import { CodeWindow } from "@/components/code-window"
+
+const TRY_IT_SNIPPET = `import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
+
+const agent = new StellarAgentKit(process.env.SECRET_KEY!, "mainnet");
+await agent.initialize();
+
+// Get a swap quote (1 XLM → USDC, 7 decimals)
+const quote = await agent.dexGetQuote(
+  { contractId: MAINNET_ASSETS.XLM.contractId },
+  { contractId: MAINNET_ASSETS.USDC.contractId },
+  "10000000"
+);
+const result = await agent.dexSwap(quote);
+console.log(result.hash);`
 
 export default function Home() {
   const scrollToCapabilities = () => {
@@ -42,7 +57,7 @@ export default function Home() {
         </div>
         <div id="hero" className="relative z-20 container mx-auto px-6 lg:px-12 pt-32 pb-40 min-h-[85vh] flex flex-col items-center justify-center text-center">
           <div className="flex flex-col items-center max-w-3xl mx-auto w-full">
-            <div className="mb-10 md:mb-14 animate-fade-in">
+            <div className="mb-10 md:mb-14 animate-fade-in w-fit mix-blend-screen">
             <Image
               src="/stellar-logo.png"
               alt="Stellar"
@@ -165,33 +180,7 @@ export default function Home() {
           </div>
           <div className="container mx-auto max-w-5xl px-6 lg:px-12">
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
-              <div className="rounded-2xl border border-zinc-800 bg-zinc-950 overflow-hidden">
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800 bg-zinc-900/80">
-                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
-                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
-                  <span className="w-3 h-3 rounded-full bg-zinc-600" />
-                  <span className="text-zinc-500 text-xs font-medium ml-2">stellar-agent-kit</span>
-                </div>
-                <div className="p-4 font-mono text-sm overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <tbody>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">1</td><td className="text-zinc-400"><span className="text-[#c678dd]">import</span> {"{ StellarAgentKit, MAINNET_ASSETS }"} <span className="text-[#c678dd]">from</span> <span className="text-[#98c379]">&quot;stellar-agent-kit&quot;</span></td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">2</td><td className="text-zinc-400"></td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">3</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> agent <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">new</span> <span className="text-[#61afef]">StellarAgentKit</span>(process.<span className="text-[#d19a66]">env</span>.<span className="text-[#61afef]">SECRET_KEY</span>, <span className="text-[#98c379]">&quot;mainnet&quot;</span>)</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">4</td><td className="text-zinc-400"><span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">initialize</span>()</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">5</td><td className="text-zinc-400"></td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">6</td><td className="text-zinc-500"><span className="text-zinc-600">// Get a swap quote (1 XLM → USDC)</span></td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">7</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> quote <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">dexGetQuote</span>(</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">8</td><td className="text-zinc-400">  {"{ contractId: MAINNET_ASSETS.XLM.contractId }"},</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">9</td><td className="text-zinc-400">  {"{ contractId: MAINNET_ASSETS.USDC.contractId }"},</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">10</td><td className="text-zinc-400">  <span className="text-[#98c379]">&quot;10000000&quot;</span></td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">11</td><td className="text-zinc-400">)</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">12</td><td className="text-zinc-400"><span className="text-[#c678dd]">const</span> result <span className="text-[#e06c75]">=</span> <span className="text-[#c678dd]">await</span> agent.<span className="text-[#61afef]">dexSwap</span>(quote)</td></tr>
-                      <tr><td className="text-zinc-500 select-none w-8 align-top py-0.5 pr-3">13</td><td className="text-zinc-400">console.<span className="text-[#61afef]">log</span>(result.hash)</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <CodeWindow code={TRY_IT_SNIPPET} title="stellar-agent-kit.ts" />
               <div className="flex flex-col items-start justify-center lg:px-4">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase mb-6" style={{ fontFamily: "var(--font-space-grotesk)" }}>
                   <ScrambleText text="TRY IT OUT FOR YOURSELF" as="span" />

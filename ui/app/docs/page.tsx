@@ -7,6 +7,7 @@ import { PageTransition } from "@/components/page-transition"
 import { DocsSidebar } from "@/components/docs-sidebar"
 import { DocsAssistant } from "@/components/docs-assistant"
 import { BentoCard, BentoGrid } from "@/components/ui/bento-grid"
+import { CodeWindow } from "@/components/code-window"
 
 export default function DocsPage() {
   return (
@@ -128,20 +129,23 @@ export default function DocsPage() {
             <p className="text-zinc-400 leading-relaxed mb-4">
               Install the SDK, set env vars, then create an agent and call <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">initialize()</code> before any protocol method.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`npm install stellar-agent-kit`}
-            </pre>
+            <CodeWindow
+              code={`npm install stellar-agent-kit`}
+              title="install.sh"
+              startLine={1}
+              className="mb-4"
+            />
             <p className="text-zinc-500 text-sm mb-2">Required env (e.g. in <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">.env</code>):</p>
             <ul className="text-zinc-500 text-sm list-disc list-inside mb-4">
               <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SECRET_KEY</code> — Stellar secret key (S...). Keep server-side only.</li>
               <li><code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SOROSWAP_API_KEY</code> — Required for DEX quotes (get from SoroSwap aggregator).</li>
             </ul>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
-
+            <CodeWindow
+              code={`import { StellarAgentKit, MAINNET_ASSETS } from "stellar-agent-kit";
+ 
 const agent = new StellarAgentKit(process.env.SECRET_KEY!, "mainnet");
 await agent.initialize();
-
+ 
 // Get a swap quote (1 XLM → USDC, 7 decimals)
 const quote = await agent.dexGetQuote(
   { contractId: MAINNET_ASSETS.XLM.contractId },
@@ -150,7 +154,10 @@ const quote = await agent.dexGetQuote(
 );
 const result = await agent.dexSwap(quote);
 console.log(result.hash);`}
-            </pre>
+              title="quick-start.ts"
+              startLine={1}
+              className="mb-4"
+            />
             <p className="text-zinc-500 text-sm">
               Or scaffold an app: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npx create-stellar-devkit-app my-app</code> and choose agent-kit or x402-api.
             </p>
@@ -187,31 +194,40 @@ console.log(result.hash);`}
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">getBalances(accountId?)</h3>
             <p className="text-zinc-400 text-sm mb-2">Native + trustline balances. Omit <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">accountId</code> to use the agent&apos;s public key.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`const balances = await agent.getBalances();
+            <CodeWindow
+              code={`const balances = await agent.getBalances();
 // or: await agent.getBalances("G...");
 // → [{ assetCode: "XLM", balance: "100.5", issuer?: string, limit?: string }, ...]`}
-            </pre>
+              title="get-balances.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">sendPayment(to, amount, assetCode?, assetIssuer?)</h3>
             <p className="text-zinc-400 text-sm mb-2">Send XLM or custom asset. Omit asset for native XLM.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`await agent.sendPayment("G...", "10");
+            <CodeWindow
+              code={`await agent.sendPayment("G...", "10");
 await agent.sendPayment("G...", "5", "USDC", "G...");  // custom asset
 // → { hash: "..." }`}
-            </pre>
+              title="send-payment.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">createAccount(destination, startingBalance)</h3>
             <p className="text-zinc-400 text-sm mb-2">Create and fund a new account (minimum ~1 XLM for base reserve).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`await agent.createAccount("G...", "1");
+            <CodeWindow
+              code={`await agent.createAccount("G...", "1");
 // → { hash: "..." }`}
-            </pre>
+              title="create-account.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">pathPayment(sendAsset, sendMax, destination, destAsset, destAmount, path?)</h3>
             <p className="text-zinc-400 text-sm mb-2">Path payment strict receive: send up to <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">sendMax</code> of sendAsset so destination receives exactly <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">destAmount</code> of destAsset.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`await agent.pathPayment(
+            <CodeWindow
+              code={`await agent.pathPayment(
   { assetCode: "XLM" },           // send asset
   "10",                           // sendMax
   "G...",                         // destination
@@ -220,12 +236,15 @@ await agent.sendPayment("G...", "5", "USDC", "G...");  // custom asset
   []                              // optional path
 );
 // → { hash: "..." }`}
-            </pre>
+              title="path-payment.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">dexGetQuote(fromAsset, toAsset, amount) / dexSwap(quote) / dexSwapExactIn(...)</h3>
             <p className="text-zinc-400 text-sm mb-2">SoroSwap aggregator. Amount in smallest units (e.g. 7 decimals for XLM).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`const quote = await agent.dexGetQuote(
+            <CodeWindow
+              code={`const quote = await agent.dexGetQuote(
   { contractId: MAINNET_ASSETS.XLM.contractId },
   { contractId: MAINNET_ASSETS.USDC.contractId },
   "10000000"  // 1 XLM
@@ -234,21 +253,30 @@ await agent.dexSwap(quote);
 
 // Or one-shot:
 await agent.dexSwapExactIn(fromAsset, toAsset, amount);`}
-            </pre>
+              title="dex.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">getPrice(asset)</h3>
             <p className="text-zinc-400 text-sm mb-2">Reflector oracle. Asset: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">{`{ symbol: "XLM" }`}</code> or <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">{`{ contractId: "C..." }`}</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`const price = await agent.getPrice({ symbol: "XLM" });
+            <CodeWindow
+              code={`const price = await agent.getPrice({ symbol: "XLM" });
 // → PriceData`}
-            </pre>
+              title="oracle.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">lendingSupply(args) / lendingBorrow(args)</h3>
             <p className="text-zinc-400 text-sm mb-2">Blend protocol. See exported types <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">LendingSupplyArgs</code>, <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">LendingBorrowArgs</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`await agent.lendingSupply({ ... });
+            <CodeWindow
+              code={`await agent.lendingSupply({ ... });
 await agent.lendingBorrow({ ... });`}
-            </pre>
+              title="lending.ts"
+              startLine={1}
+              className="mb-4"
+            />
           </section>
 
           {/* ─── x402-stellar-sdk ───────────────────────────────────────── */}
@@ -278,8 +306,8 @@ await agent.lendingBorrow({ ... });`}
             </ul>
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Express</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`import express from "express";
+            <CodeWindow
+              code={`import express from "express";
 import { x402 } from "x402-stellar-sdk/server";
 
 const app = express();
@@ -293,21 +321,27 @@ const options = {
 app.use("/api/premium", x402(options));
 app.get("/api/premium", (_, res) => res.json({ data: "Premium content" }));
 app.listen(3000);`}
-            </pre>
+              title="express-x402.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Hono</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`import { Hono } from "hono";
+            <CodeWindow
+              code={`import { Hono } from "hono";
 import { x402Hono } from "x402-stellar-sdk/server/hono";
 
 const app = new Hono();
 app.use("/api/premium", x402Hono(options));
 app.get("/api/premium", (c) => c.json({ data: "Premium content" }));`}
-            </pre>
+              title="hono-x402.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Next.js App Router</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`// app/api/premium/route.ts
+            <CodeWindow
+              code={`// app/api/premium/route.ts
 import { withX402 } from "x402-stellar-sdk/server/next";
 
 export async function GET(req: Request) {
@@ -315,12 +349,15 @@ export async function GET(req: Request) {
   if (res402) return res402;
   return Response.json({ data: "Premium content" });
 }`}
-            </pre>
+              title="route.ts"
+              startLine={1}
+              className="mb-4"
+            />
 
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Client: x402Fetch</h3>
             <p className="text-zinc-400 text-sm mb-2">On 402, the client must provide <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">payWithStellar</code> to perform the payment and return the transaction hash; then the request is retried with <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">X-402-Transaction-Hash</code>.</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`import { x402Fetch } from "x402-stellar-sdk/client";
+            <CodeWindow
+              code={`import { x402Fetch } from "x402-stellar-sdk/client";
 import type { X402PaymentRequest, X402PaymentResponse } from "x402-stellar-sdk/client";
 
 const res = await x402Fetch(url, undefined, {
@@ -331,7 +368,10 @@ const res = await x402Fetch(url, undefined, {
   },
 });
 const data = await res.json();`}
-            </pre>
+              title="client-x402.ts"
+              startLine={1}
+              className="mb-4"
+            />
           </section>
 
           {/* ─── create-stellar-devkit-app ──────────────────────────────── */}
@@ -340,12 +380,15 @@ const data = await res.json();`}
             <p className="text-zinc-400 leading-relaxed mb-4">
               <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npx create-stellar-devkit-app [name]</code>. Prompts for project name and template if not provided.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`npx create-stellar-devkit-app my-app
+            <CodeWindow
+              code={`npx create-stellar-devkit-app my-app
 npx create-stellar-devkit-app my-app --agent-kit
 npx create-stellar-devkit-app my-api --x402-api
 npx create-stellar-devkit-app my-app --skip-install`}
-            </pre>
+              title="create-stellar-devkit-app.sh"
+              startLine={1}
+              className="mb-4"
+            />
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">Templates</h3>
             <ul className="text-zinc-400 text-sm space-y-2 mb-4">
               <li><strong className="text-zinc-300">agent-kit</strong> — Next.js app with stellar-agent-kit: quote API route, swap UI. Env: <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SECRET_KEY</code>, <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">SOROSWAP_API_KEY</code>.</li>
@@ -376,20 +419,29 @@ npx create-stellar-devkit-app my-app --skip-install`}
               From repo root after <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">npm run build:root</code> (or full build). Commands live in <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">src/</code> and are run via <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">node dist/index.js &lt;command&gt;</code>.
             </p>
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">balance</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`node dist/index.js balance GABC... [--network=testnet|mainnet]
+            <CodeWindow
+              code={`node dist/index.js balance GABC... [--network=testnet|mainnet]
 # Output: JSON array of { code, issuer, balance }`}
-            </pre>
+              title="cli-balance.sh"
+              startLine={1}
+              className="mb-4"
+            />
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">pay</h3>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`node dist/index.js pay <SECRET_KEY> <DESTINATION_G...> <amount> [--network=mainnet] [--asset=USDC] [--issuer=G...]`}
-            </pre>
+            <CodeWindow
+              code={`node dist/index.js pay <SECRET_KEY> <DESTINATION_G...> <amount> [--network=mainnet] [--asset=USDC] [--issuer=G...]`}
+              title="cli-pay.sh"
+              startLine={1}
+              className="mb-4"
+            />
             <h3 className="text-lg font-medium text-[#a78bfa] mt-6 mb-2">agent</h3>
             <p className="text-zinc-400 text-sm mb-2">Interactive chat with tools: check_balance, swap_asset, get_swap_quote, create_trustline. Uses <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">GROQ_API_KEY</code> or <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">--api-key</code> (OpenAI-compatible).</p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto mb-4 whitespace-pre leading-relaxed">
-{`node dist/index.js agent [--api-key <key>]
+            <CodeWindow
+              code={`node dist/index.js agent [--api-key <key>]
 # At prompt: "What's the balance of G...?" or "Get a quote to swap 10 XLM to USDC"`}
-            </pre>
+              title="cli-agent.sh"
+              startLine={1}
+              className="mb-4"
+            />
           </section>
 
           {/* ─── UI & APIs ──────────────────────────────────────────────── */}
@@ -530,8 +582,8 @@ npx create-stellar-devkit-app my-app --skip-install`}
             <p className="text-zinc-400 leading-relaxed mb-4">
               Monorepo layout. Packages are under <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">packages/</code>; UI and SDK frontend under <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">ui/</code> and <code className="rounded bg-zinc-800/90 px-1.5 py-0.5 text-zinc-200 font-mono text-[0.9em]">sdk-fe/</code>.
             </p>
-            <pre className="rounded-xl border border-zinc-800 bg-zinc-900/80 p-4 text-sm text-zinc-200 font-mono overflow-x-auto whitespace-pre leading-relaxed">
-{`stellar-agent-kit/
+            <CodeWindow
+              code={`stellar-agent-kit/
 ├── packages/
 │   ├── x402-stellar-sdk/     # HTTP 402 server + client
 │   ├── stellar-agent-kit/    # DeFi SDK (DEX, lending, oracles)
@@ -540,7 +592,9 @@ npx create-stellar-devkit-app my-app --skip-install`}
 ├── ui/                       # Next.js app (Orbit)
 ├── sdk-fe/                   # SDK docs / package pages
 └── docs/                     # REFERENCE_MANTLE_DEVKIT, etc.`}
-            </pre>
+              title="structure.txt"
+              startLine={1}
+            />
           </section>
 
           {/* ─── Development ────────────────────────────────────────────── */}
