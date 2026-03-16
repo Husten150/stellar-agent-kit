@@ -7,6 +7,7 @@ import { x402 } from "x402-stellar-sdk/server";
 const app = express();
 app.use(express.json());
 
+//remove the dummy placeholder Stellar address "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2X"
 const destination = process.env.X402_DESTINATION;
 if (!destination) throw new Error("X402_DESTINATION is required. Set it in .env or .env.local.");
 const network = (process.env.NETWORK === "mainnet" ? "mainnet" : "testnet") as "mainnet" | "testnet";
