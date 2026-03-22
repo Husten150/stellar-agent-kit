@@ -15,6 +15,7 @@
     "stellar-agent-kit": "*"
   },
   "devDependencies": {
+    "@types/node": "^20.19.32",
     "tsup": "^8.5.0",
     "typescript": "^5.3.0"
   },

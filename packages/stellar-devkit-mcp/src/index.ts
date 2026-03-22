@@ -86,6 +86,39 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ["fromAsset", "toAsset", "amount"],
       },
     },
+    {
+      name: "execute_swap",
+      description:
+        "Execute an actual token swap on Stellar mainnet via SoroSwap. " +
+        "IMPORTANT: Always call get_quote first and confirm with the user before executing. " +
+        "Signs and submits the transaction using SECRET_KEY from the MCP environment. " +
+        "Requires both SOROSWAP_API_KEY and SECRET_KEY environment variables. " +
+        "Supported assets: XLM, USDC.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          fromAsset: {
+            type: "string",
+            enum: ["XLM", "USDC"],
+            description: "Asset to swap from",
+          },
+          toAsset: {
+            type: "string",
+            enum: ["XLM", "USDC"],
+            description: "Asset to swap to",
+          },
+          amount: {
+            type: "string",
+            description: "Amount in human-readable form (e.g. \"10\" or \"0.5\")",
+          },
+          slippageBps: {
+            type: "number",
+            description: "Max slippage in basis points (default: 50 = 0.5%)",
+          },
+        },
+        required: ["fromAsset", "toAsset", "amount"],
+      },
+    },
   ],
 }));
 
@@ -217,6 +250,95 @@ const res = await x402Fetch(url, undefined, {
       return { content: [{ type: "text", text: `Quote failed: ${message}` }] };
     }
   }
+  if (name === "execute_swap") {
+    const apiKey = process.env.SOROSWAP_API_KEY;
+    const secretKey = process.env.SECRET_KEY;
+
+    if (!apiKey) {
+      return {
+        content: [{
+          type: "text",
+          text:
+            "execute_swap requires SOROSWAP_API_KEY in the MCP server environment. " +
+            "Add it to your MCP config and restart the server.",
+        }],
+      };
+    }
+
+    if (!secretKey) {
+      return {
+        content: [{
+          type: "text",
+          text:
+            "execute_swap requires SECRET_KEY (Stellar secret key S...) in the MCP server environment. " +
+            "Add it to your MCP config and restart the server.",
+        }],
+      };
+    }
+
+    const fromAsset = ((args?.fromAsset as string) ?? "XLM").toUpperCase();
+    const toAsset   = ((args?.toAsset   as string) ?? "USDC").toUpperCase();
+    const amountStr = ((args?.amount    as string) ?? "0").trim();
+    const slippageBps = typeof args?.slippageBps === "number" ? (args.slippageBps as number) : 50;
+
+    const num = parseFloat(amountStr);
+    if (!Number.isFinite(num) || num <= 0) {
+      return {
+        content: [{ type: "text", text: `Invalid amount: ${amountStr}. Use a positive number like "10" or "0.5".` }],
+      };
+    }
+
+    if (fromAsset === toAsset) {
+      return {
+        content: [{ type: "text", text: "fromAsset and toAsset must be different." }],
+      };
+    }
+
+    const decimals = 7;
+    const rawAmount = String(Math.floor(num * 10 ** decimals));
+    const fromContract = fromAsset === "XLM" ? MAINNET_ASSETS.XLM : MAINNET_ASSETS.USDC;
+    const toContract   = toAsset   === "XLM" ? MAINNET_ASSETS.XLM : MAINNET_ASSETS.USDC;
+    const from: DexAsset = { contractId: fromContract.contractId };
+    const to:   DexAsset = { contractId: toContract.contractId };
+
+    try {
+      const config = getNetworkConfig("mainnet");
+      const client = createDexClient(config, apiKey);
+
+      const quote = await client.getQuote(from, to, rawAmount);
+      const result = await client.executeSwap(secretKey, quote);
+
+      const expectedOutHuman = (parseInt(quote.expectedOut, 10) / 10 ** decimals).toFixed(6);
+      const minOutHuman      = (parseInt(quote.minOut,      10) / 10 ** decimals).toFixed(6);
+
+      const text = [
+        `✅ Swap executed successfully!`,
+        ``,
+        `📊 Details:`,
+        `  • Sold:      ${amountStr} ${fromAsset}`,
+        `  • Received:  ~${expectedOutHuman} ${toAsset}`,
+        `  • Min out:   ${minOutHuman} ${toAsset} (slippage: ${slippageBps / 100}%)`,
+        ``,
+        `🔗 Transaction: https://stellar.expert/explorer/public/tx/${result.hash}`,
+        `📋 Status: ${result.status}`,
+      ].join("\n");
+
+      return { content: [{ type: "text", text }] };
+
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      let hint = "";
+      if (message.includes("insufficient")) hint = " Check your account balance.";
+      else if (message.includes("sendTransaction")) hint = " The network rejected the transaction. Try again.";
+      else if (message.includes("build")) hint = " SoroSwap build step failed. Your SOROSWAP_API_KEY may need swap permissions.";
+
+      return {
+        content: [{ type: "text", text: `❌ Swap failed: ${message}.${hint}` }],
+      };
+    }
+  }
+
+
   throw new Error(`Unknown tool: ${name}`);
 });
 
