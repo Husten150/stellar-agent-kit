@@ -1,9 +1,0 @@
-.env.local
-node_modules
-.next
-.gitignore
-.env.local
-ui/.env.local
-
-dist
-.env
