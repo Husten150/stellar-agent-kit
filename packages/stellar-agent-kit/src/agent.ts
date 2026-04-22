@@ -246,4 +246,140 @@ export class StellarAgentKit {
     this.ensureInitialized();
     return blendBorrow(this.config, this.keypair.secret(), args);
   }
+
+  //  Transaction history helpers
+
+  /**
+   * Get transaction history for an account with decoded operations.
+   * @param accountId - Stellar account ID (G...); defaults to this agent's public key
+   * @param limit - Maximum number of transactions to fetch (default: 10, max: 200)
+   * @returns Array of transactions with decoded operation details
+   */
+  async getTransactionHistory(
+    accountId?: string,
+    limit: number = 10
+  ): Promise<Array<{
+    hash: string;
+    ledger: number;
+    createdAt: string;
+    sourceAccount: string;
+    fee: number;
+    memo?: string;
+    operations: Array<{
+      type: string;
+      source?: string;
+      details: Record<string, unknown>;
+    }>;
+  }>> {
+    this.ensureInitialized();
+    if (!this._horizon) throw new Error("Horizon not initialized");
+    
+    const id = accountId ?? this.keypair.publicKey();
+    const actualLimit = Math.min(Math.max(limit, 1), 200); // Clamp between 1-200
+    
+    try {
+      const transactions = await this._horizon
+        .transactions()
+        .forAccount(id)
+        .limit(actualLimit)
+        .order("desc")
+        .call();
+
+      return transactions.records.map((tx) => ({
+        hash: tx.hash,
+        ledger: tx.ledger,
+        createdAt: tx.created_at,
+        sourceAccount: tx.source_account,
+        fee: parseInt(tx.fee_paid, 10),
+        memo: tx.memo ? tx.memo : undefined,
+        operations: tx.operations.map((op) => ({
+          type: op.type,
+          source: op.source_account,
+          details: this.decodeOperationDetails(op),
+        })),
+      }));
+    } catch (error) {
+      throw new Error(`Failed to fetch transaction history: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  /**
+   * Decode operation details into a human-readable format.
+   * @private
+   */
+  private decodeOperationDetails(operation: Horizon.BaseOperationResponse): Record<string, unknown> {
+    switch (operation.type) {
+      case "payment":
+        return {
+          to: operation.destination,
+          amount: operation.amount,
+          asset: operation.asset_code === "native" ? "XLM" : `${operation.asset_code}:${operation.asset_issuer}`,
+        };
+      case "create_account":
+        return {
+          newAccount: operation.destination,
+          startingBalance: operation.starting_balance,
+        };
+      case "path_payment":
+        return {
+          to: operation.destination,
+          sendMax: operation.send_max,
+          sendAsset: operation.send_asset_code === "native" ? "XLM" : `${operation.send_asset_code}:${operation.send_asset_issuer}`,
+          destAmount: operation.dest_amount,
+          destAsset: operation.dest_asset_code === "native" ? "XLM" : `${operation.dest_asset_code}:${operation.dest_asset_issuer}`,
+        };
+      case "manage_offer":
+        return {
+          selling: operation.selling_asset_code === "native" ? "XLM" : `${operation.selling_asset_code}:${operation.selling_asset_issuer}`,
+          buying: operation.buying_asset_code === "native" ? "XLM" : `${operation.buying_asset_code}:${operation.buying_asset_issuer}`,
+          amount: operation.amount,
+          price: operation.price,
+        };
+      case "create_passive_sell_offer":
+        return {
+          selling: operation.selling_asset_code === "native" ? "XLM" : `${operation.selling_asset_code}:${operation.selling_asset_issuer}`,
+          buying: operation.buying_asset_code === "native" ? "XLM" : `${operation.buying_asset_code}:${operation.buying_asset_issuer}`,
+          amount: operation.amount,
+          price: operation.price,
+        };
+      case "set_options":
+        return {
+          signer: operation.signer_key ? { key: operation.signer_key, weight: operation.signer_weight } : undefined,
+          masterWeight: operation.master_weight,
+          lowThreshold: operation.low_threshold,
+          medThreshold: operation.med_threshold,
+          highThreshold: operation.high_threshold,
+          homeDomain: operation.home_domain,
+          inflationDest: operation.inflation_destination,
+        };
+      case "change_trust":
+        return {
+          asset: operation.asset_code === "native" ? "XLM" : `${operation.asset_code}:${operation.asset_issuer}`,
+          limit: operation.limit,
+        };
+      case "allow_trust":
+        return {
+          trustor: operation.trustor,
+          assetCode: operation.asset_code,
+          authorize: operation.authorize,
+        };
+      case "account_merge":
+        return {
+          destination: operation.destination,
+        };
+      case "inflation":
+        return {};
+      case "manage_data":
+        return {
+          name: operation.name,
+          value: operation.value ? Buffer.from(operation.value, "base64").toString("utf8") : undefined,
+        };
+      case "bump_sequence":
+        return {
+          bumpTo: operation.bump_to,
+        };
+      default:
+        return { raw: operation };
+    }
+  }
 }
